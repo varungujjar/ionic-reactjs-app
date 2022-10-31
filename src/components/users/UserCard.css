@@ -1,0 +1,12 @@
+.user-card-thumb {
+  background-color: #333;
+  border-radius: 50%;
+  overflow: hidden;
+  height: 80px;
+  width: 80px;
+}
+
+.user-card-thumb img {
+  object-fit: cover;
+  height: auto;
+}

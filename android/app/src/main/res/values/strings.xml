@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Esports</string>
+    <string name="title_activity_main">Esports</string>
+    <string name="package_name">com.constellationesports</string>
+    <string name="custom_url_scheme">com.constellationesports</string>
+    <color name="myColor">#171027</color>
+    <string name="facebook_app_id">730915411432768</string>
+    <string name="fb_login_protocol_scheme">fb730915411432768</string>
+    <string name="facebook_client_token">f61280cfc9485239db1938dcb23b4867</string>
+    <string name="server_client_id">287524714990-od0bj2r7bsboh1p12pgbjjn2lbt9tien.apps.googleusercontent.com</string>
+</resources>

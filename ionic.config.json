@@ -1,0 +1,7 @@
+{
+  "name": "esports",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
