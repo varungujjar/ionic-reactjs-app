@@ -96,25 +96,24 @@ const Content = () => {
 const App = () => {
   const [userAuthSession, setUserAuthSession] = useState("");
   const [userAuthRefresh, setUserAuthRefresh] = useState(true);
+  const [db, setDb] = useState(null);
+
   const [toastMessages, setToastMessages] = useState();
 
-  const [db, setDb] = useState(null);
-  var storage = false;
+  // var storage = false;
+  // const history = useHistory();
+  // const [currentUrl, setCurrentUrl] = useState(history.location.pathname);
 
-  const history = useHistory();
-  const [currentUrl, setCurrentUrl] = useState(history.location.pathname);
-
-  const createStore = (name = "__mydb") => {
-    storage = new Storage({
-      name,
-      driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
-    });
-    storage.create();
-    setDb(storage);
-  };
+  // const createStore = (name = "__mydb") => {
+  //   storage = new Storage({
+  //     name,
+  //     driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
+  //   });
+  //   storage.create();
+  //   setDb(storage);
+  // };
 
   useEffect(() => {
-    console.log(toastMessages);
     // createStore();
   }, []);
 

@@ -36,6 +36,12 @@ const Articles = ({ catRef }) => {
     }, config.timeOutDelay);
   };
 
+  const doRefresh = (event) => {
+    setArticlesLoading(true);
+    GetArticlesItems();
+    event.detail.complete();
+  };
+
   useEffect(() => {
     if (articlesLoading) {
       GetArticlesItems();
@@ -43,7 +49,11 @@ const Articles = ({ catRef }) => {
   }, [catRef]);
 
   return (
-    <PageLayout title={config[catRef].name}>
+    <PageLayout
+      title={config[catRef].name}
+      onPageRefresh={doRefresh}
+      showPageRefresh={true}
+    >
       <ArticlesList
         items={articlesItems}
         isLoading={articlesLoading}

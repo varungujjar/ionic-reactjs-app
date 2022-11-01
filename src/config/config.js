@@ -49,8 +49,8 @@ export const config = {
   community: { type: "articles", id: 3 },
   privacy: { type: "articles", id: 19 },
   terms: { type: "articles", id: 20 },
-  // baseUrl: "https://constellationesports.com/beta/",
-  baseUrl: "http://localhost:8888/esports_web/",
+  baseUrl: "https://constellationesports.com/beta/",
+  // baseUrl: "http://localhost:8888/esports_web/",
   LoaderOptions: {
     translucent: true,
     spinner: "crescent",

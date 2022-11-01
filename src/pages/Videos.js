@@ -65,14 +65,14 @@ const Videos = () => {
   const setCategoryId = (categoryId) => {
     setVideosLoading(true);
     setVideoCategoriesActiveId(categoryId);
-    GetCategoryItems({}, categoryId);
+    GetCategoryItems(categoryId);
   };
 
   const doRefresh = (event) => {
     setVideosLoading(true);
     setVideoCategoriesLoading(true);
     GetCategories();
-    GetCategoryItems();
+    GetCategoryItems(videoCategoriesActiveId);
     event.detail.complete();
   };
 
@@ -82,7 +82,7 @@ const Videos = () => {
     }
 
     if (videosLoading) {
-      GetCategoryItems({}, videoCategoriesActiveId);
+      GetCategoryItems(videoCategoriesActiveId);
     }
   }, []);
 
