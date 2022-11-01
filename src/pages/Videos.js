@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import PageLayout from "../components/PageLayout";
 import VideosList from "../components/videos/VideosList";
-
+import { setToast } from "../components/Toast";
+import GlobalContext from "../helpers/Context";
 import { config } from "../config/config";
-import axios from "../config/axios";
+import api from "../config/axios";
 
-const Videos = (props) => {
+const Videos = () => {
   const [videoCategoriesItems, setVideoCategoriesItems] = useState({});
   const [videoCategoriesActiveId, setVideoCategoriesActiveId] = useState(0);
   const [videoCategoriesLoading, setVideoCategoriesLoading] = useState(true);
@@ -13,9 +14,11 @@ const Videos = (props) => {
   const [videosItems, setVideosItems] = useState({});
   const [videosLoading, setVideosLoading] = useState(true);
 
-  const GetCategoryItems = (event = {}, categoryId) => {
+  const context = useContext(GlobalContext);
+
+  const GetCategoryItems = (categoryId) => {
     setTimeout(async () => {
-      await axios
+      await api
         .get(null, {
           params: {
             type: config.videos.type,
@@ -24,25 +27,37 @@ const Videos = (props) => {
           },
         })
         .then((response) => {
-          // messages(response);
+          setToast(context, response.data);
           setVideosItems(response.data.data);
           setVideosLoading(false);
+        })
+        .catch((error) => {
+          setToast(context, {
+            message: error.toJSON().message,
+            type: "danger",
+          });
         });
     }, config.timeOutDelay);
   };
 
-  const GetCategories = (event = {}) => {
+  const GetCategories = () => {
     setTimeout(async () => {
-      await axios
+      await api
         .get(null, {
           params: {
             type: "videosCategories",
           },
         })
         .then((response) => {
-          // messages(response);
+          setToast(context, response.data);
           setVideoCategoriesItems(response.data.data);
           setVideoCategoriesLoading(false);
+        })
+        .catch((error) => {
+          setToast(context, {
+            message: error.toJSON().message,
+            type: "danger",
+          });
         });
     }, config.timeOutDelay);
   };
@@ -54,8 +69,11 @@ const Videos = (props) => {
   };
 
   const doRefresh = (event) => {
-    GetCategories(event);
-    GetCategoryItems(event);
+    setVideosLoading(true);
+    setVideoCategoriesLoading(true);
+    GetCategories();
+    GetCategoryItems();
+    event.detail.complete();
   };
 
   useEffect(() => {
@@ -69,18 +87,22 @@ const Videos = (props) => {
   }, []);
 
   return (
-    <PageLayout
-      title={config.videos.name}
-      tabShow={true}
-      tabItems={videoCategoriesItems}
-      tabDefaultTitle={"Featured"}
-      tabDefaultTitleValue={0}
-      tabActiveValue={videoCategoriesActiveId}
-      tabIsLoading={videoCategoriesLoading}
-      tabOnChange={(categoryId) => setCategoryId(categoryId)}
-    >
-      <VideosList items={videosItems} isLoading={videosLoading} />
-    </PageLayout>
+    <>
+      <PageLayout
+        title={config.videos.name}
+        tabShow={true}
+        tabItems={videoCategoriesItems}
+        tabDefaultTitle={"Featured"}
+        tabDefaultTitleValue={0}
+        tabActiveValue={videoCategoriesActiveId}
+        tabIsLoading={videoCategoriesLoading}
+        tabOnChange={(categoryId) => setCategoryId(categoryId)}
+        showPageRefresh={true}
+        onPageRefresh={doRefresh}
+      >
+        <VideosList items={videosItems} isLoading={videosLoading} />
+      </PageLayout>
+    </>
   );
 };
 export default Videos;

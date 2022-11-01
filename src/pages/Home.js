@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { config } from "../config/config";
-import axios from "../config/axios";
+import api from "../config/axios";
 
 import PageLayout from "../components/PageLayout";
+import { PageSection } from "../components/PageSection";
+
 import VideosSlider from "../components/videos/VideosSlider";
 import ArticlesSlider from "../components/articles/ArticlesSlider";
 import UsersSlider from "../components/users/UsersSlider";
-
-import { PageSection } from "../components/PageSection";
+import { setToast } from "../components/Toast";
+import GlobalContext from "../helpers/Context";
 
 const Home = () => {
-  const [message, setMessage] = useState({});
-
   const [videosItems, setVideosItems] = useState({});
   const [videosLoading, setVideosLoading] = useState(true);
 
@@ -24,37 +24,31 @@ const Home = () => {
   const [usersItems, setUsersItems] = useState({});
   const [usersLoading, setUsersLoading] = useState(true);
 
-  const messages = (response) => {
-    if (response.data.message) {
-      //Noti
-    }
-
-    if (response.data.messages) {
-      for (const [key, value] of Object.entries(response.data.messages)) {
-        value.forEach((message) => {
-          //Noti
-        });
-      }
-    }
-  };
+  const context = useContext(GlobalContext);
 
   const GetVideoItems = () => {
     setTimeout(async () => {
-      await axios
+      await api
         .get(null, {
           params: { type: config.videos.type, featured: true },
         })
         .then((response) => {
-          messages(response);
+          setToast(context, response.data);
           setVideosItems(response.data.data);
           setVideosLoading(false);
+        })
+        .catch((error) => {
+          setToast(context, {
+            message: error.toJSON().message,
+            type: "danger",
+          });
         });
     }, config.timeOutDelay);
   };
 
   const GetArticlesItems = () => {
     setTimeout(async () => {
-      await axios
+      await api
         .get(null, {
           params: {
             type: config.articles.type,
@@ -63,16 +57,22 @@ const Home = () => {
           },
         })
         .then((response) => {
-          messages(response);
+          setToast(context, response.data);
           setArticlesItems(response.data.data);
           setArticlesLoading(false);
+        })
+        .catch((error) => {
+          setToast(context, {
+            message: error.toJSON().message,
+            type: "danger",
+          });
         });
     }, config.timeOutDelay);
   };
 
   const GetNewsItems = () => {
     setTimeout(async () => {
-      await axios
+      await api
         .get(null, {
           params: {
             type: config.news.type,
@@ -81,27 +81,51 @@ const Home = () => {
           },
         })
         .then((response) => {
-          messages(response);
+          setToast(context, response.data);
           setNewsItems(response.data.data);
           setNewsLoading(false);
+        })
+        .catch((error) => {
+          setToast(context, {
+            message: error.toJSON().message,
+            type: "danger",
+          });
         });
     }, config.timeOutDelay);
   };
 
   const GetUsersItems = async () => {
     setTimeout(async () => {
-      await axios
+      await api
         .get(null, {
           params: {
             type: config.users.type,
           },
         })
         .then((response) => {
-          messages(response);
+          setToast(context, response.data);
           setUsersItems(response.data.data);
           setUsersLoading(false);
+        })
+        .catch((error) => {
+          setToast(context, {
+            message: error.toJSON().message,
+            type: "danger",
+          });
         });
     }, config.timeOutDelay);
+  };
+
+  const doRefresh = (event) => {
+    setVideosLoading(true);
+    setArticlesLoading(true);
+    setNewsLoading(true);
+    setUsersLoading(true);
+    GetVideoItems();
+    GetArticlesItems();
+    GetNewsItems();
+    GetUsersItems();
+    event.detail.complete();
   };
 
   useEffect(() => {
@@ -120,7 +144,11 @@ const Home = () => {
   }, []);
 
   return (
-    <PageLayout title={config.home.name}>
+    <PageLayout
+      title={config.home.name}
+      onPageRefresh={doRefresh}
+      showPageRefresh={true}
+    >
       <PageSection title={config.videos.name} link={config.videos.path} />
       <VideosSlider items={videosItems} isLoading={videosLoading} />
 

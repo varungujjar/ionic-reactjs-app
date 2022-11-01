@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { RenderToast } from "./components/Toast";
 
 import PageMenu from "./components/PageMenu";
 import PageTabs from "./components/PageTabs";
@@ -95,6 +96,7 @@ const Content = () => {
 const App = () => {
   const [userAuthSession, setUserAuthSession] = useState("");
   const [userAuthRefresh, setUserAuthRefresh] = useState(true);
+  const [toastMessages, setToastMessages] = useState();
 
   const [db, setDb] = useState(null);
   var storage = false;
@@ -112,10 +114,9 @@ const App = () => {
   };
 
   useEffect(() => {
+    console.log(toastMessages);
     // createStore();
-
-    console.log(currentUrl);
-  }, [currentUrl]);
+  }, []);
 
   return (
     //Make all states globally available
@@ -127,9 +128,17 @@ const App = () => {
         setUserAuthSession,
         userAuthRefresh,
         setUserAuthRefresh,
-        setCurrentUrl,
+        toastMessages,
+        setToastMessages,
       }}
     >
+      {toastMessages && (
+        <RenderToast
+          message={toastMessages.message}
+          type={toastMessages.type}
+          onDismiss={() => setToastMessages(null)}
+        />
+      )}
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">

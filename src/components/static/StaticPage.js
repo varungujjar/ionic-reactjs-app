@@ -22,9 +22,12 @@ export const StaticPagePlaceHolder = () => {
       <h2 className="mt-3">
         <span className="placeholder col-6"></span>
       </h2>
-      <div className="fs-6 mb-3 text-muted">
-        <span className="placeholder col-4"></span>
-      </div>
+
+      <span className="placeholder col-7"></span>
+      <span className="placeholder col-4"></span>
+      <span className="placeholder col-4"></span>
+      <span className="placeholder col-6"></span>
+
       <span className="placeholder col-7"></span>
       <span className="placeholder col-4"></span>
       <span className="placeholder col-4"></span>

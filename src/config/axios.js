@@ -1,7 +1,7 @@
 import axios from "axios";
 import { config } from "./config";
 
-export default axios.create({
+let api = axios.create({
   baseURL: config.baseUrl,
   params: {
     option: "com_ajax",
@@ -10,3 +10,15 @@ export default axios.create({
     format: "json",
   },
 });
+
+//Reserved for future to catch all errors in one placec
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // console.log(error);
+    // whatever you want to do with the error
+    throw error;
+  }
+);
+
+export default api;

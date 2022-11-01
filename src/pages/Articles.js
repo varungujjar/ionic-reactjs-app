@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { config } from "../config/config";
-import axios from "../config/axios";
+import api from "../config/axios";
 import PageLayout from "../components/PageLayout";
 import ArticlesList from "../components/articles/ArticlesList";
+import { setToast } from "../components/Toast";
+import GlobalContext from "../helpers/Context";
 
 const Articles = ({ catRef }) => {
   const [articlesItems, setArticlesItems] = useState({});
   const [articlesLoading, setArticlesLoading] = useState(true);
 
+  const context = useContext(GlobalContext);
+
   const GetArticlesItems = () => {
     setTimeout(async () => {
-      await axios
+      await api
         .get(null, {
           params: {
             type: config.articles.type,
@@ -19,9 +23,15 @@ const Articles = ({ catRef }) => {
           },
         })
         .then((response) => {
-          // messages(response);
+          setToast(context, response.data);
           setArticlesItems(response.data.data);
           setArticlesLoading(false);
+        })
+        .catch((error) => {
+          setToast(context, {
+            message: error.toJSON().message,
+            type: "danger",
+          });
         });
     }, config.timeOutDelay);
   };

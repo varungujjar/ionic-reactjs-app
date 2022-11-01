@@ -5,6 +5,8 @@ import PageSubTabs from "./PageSubTabs";
 import {
   IonButtons,
   IonIcon,
+  IonRefresherContent,
+  IonRefresher,
   IonContent,
   IonHeader,
   IonMenuButton,
@@ -12,12 +14,11 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import Toast from "./Toast";
 
 const PageLayout = ({
   title,
   icon,
-  content,
-  loader,
   tabShow,
   tabItems,
   tabDefaultTitle,
@@ -25,6 +26,8 @@ const PageLayout = ({
   tabActiveValue,
   tabIsLoading,
   tabOnChange,
+  showPageRefresh,
+  onPageRefresh,
   children,
 }) => {
   return (
@@ -49,12 +52,29 @@ const PageLayout = ({
         )}
       </IonHeader>
       <IonContent fullscreen>
+        {showPageRefresh && (
+          <IonRefresher slot="fixed" onIonRefresh={onPageRefresh}>
+            <IonRefresherContent></IonRefresherContent>
+          </IonRefresher>
+        )}
         <div className="container" style={{ padding: "0px 20px" }}>
           {children ? children : null}
         </div>
       </IonContent>
     </IonPage>
   );
+};
+
+PageLayout.defaultProps = {
+  title: "",
+  icon: "",
+  tabShow: false,
+  tabItems: {},
+  tabDefaultTitle: "",
+  tabDefaultTitleValue: null,
+  tabActiveValue: null,
+  tabIsLoading: false,
+  showPageRefresh: false,
 };
 
 export default PageLayout;
