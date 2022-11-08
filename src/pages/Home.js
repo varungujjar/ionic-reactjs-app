@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { config } from "../config/config";
 import api from "../config/axios";
 
@@ -8,8 +8,9 @@ import { PageSection } from "../components/PageSection";
 import VideosSlider from "../components/videos/VideosSlider";
 import ArticlesSlider from "../components/articles/ArticlesSlider";
 import UsersSlider from "../components/users/UsersSlider";
+
 import { setToast } from "../components/Toast";
-import GlobalContext from "../helpers/Context";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
   const [videosItems, setVideosItems] = useState({});
@@ -24,7 +25,7 @@ const Home = () => {
   const [usersItems, setUsersItems] = useState({});
   const [usersLoading, setUsersLoading] = useState(true);
 
-  const context = useContext(GlobalContext);
+  const reduxDispatch = useDispatch();
 
   const GetVideoItems = () => {
     setTimeout(async () => {
@@ -33,12 +34,12 @@ const Home = () => {
           params: { type: config.videos.type, featured: true },
         })
         .then((response) => {
-          setToast(context, response.data);
+          setToast(reduxDispatch, response.data);
           setVideosItems(response.data.data);
           setVideosLoading(false);
         })
         .catch((error) => {
-          setToast(context, {
+          setToast(reduxDispatch, {
             message: error.toJSON().message,
             type: "danger",
           });
@@ -57,12 +58,12 @@ const Home = () => {
           },
         })
         .then((response) => {
-          setToast(context, response.data);
+          setToast(reduxDispatch, response.data);
           setArticlesItems(response.data.data);
           setArticlesLoading(false);
         })
         .catch((error) => {
-          setToast(context, {
+          setToast(reduxDispatch, {
             message: error.toJSON().message,
             type: "danger",
           });
@@ -81,12 +82,12 @@ const Home = () => {
           },
         })
         .then((response) => {
-          setToast(context, response.data);
+          setToast(reduxDispatch, response.data);
           setNewsItems(response.data.data);
           setNewsLoading(false);
         })
         .catch((error) => {
-          setToast(context, {
+          setToast(reduxDispatch, {
             message: error.toJSON().message,
             type: "danger",
           });
@@ -103,12 +104,12 @@ const Home = () => {
           },
         })
         .then((response) => {
-          setToast(context, response.data);
+          setToast(reduxDispatch, response.data);
           setUsersItems(response.data.data);
           setUsersLoading(false);
         })
         .catch((error) => {
-          setToast(context, {
+          setToast(reduxDispatch, {
             message: error.toJSON().message,
             type: "danger",
           });
@@ -144,11 +145,7 @@ const Home = () => {
   }, []);
 
   return (
-    <PageLayout
-      title={config.home.name}
-      onPageRefresh={doRefresh}
-      showPageRefresh={true}
-    >
+    <PageLayout title={config.home.name} onPageRefresh={doRefresh} showPageRefresh={true}>
       <PageSection title={config.videos.name} link={config.videos.path} />
       <VideosSlider items={videosItems} isLoading={videosLoading} />
 

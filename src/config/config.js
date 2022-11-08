@@ -44,13 +44,19 @@ export const config = {
     icon: documentText,
     path: "/page/profile",
   },
+  login: {
+    type: "login",
+    name: "Login",
+    icon: documentText,
+    path: "/page/login",
+  },
   aboutus: { type: "articles", id: 1 },
   leadership: { type: "articles", id: 49 },
   community: { type: "articles", id: 3 },
   privacy: { type: "articles", id: 19 },
   terms: { type: "articles", id: 20 },
-  baseUrl: "https://constellationesports.com/beta/",
-  // baseUrl: "http://localhost:8888/esports_web/",
+  // baseUrl: "https://constellationesports.com/beta/",
+  baseUrl: "http://localhost:8888/esports_web/",
   LoaderOptions: {
     translucent: true,
     spinner: "crescent",
@@ -65,6 +71,8 @@ export const config = {
     dots: true,
   },
   timeOutDelay: 2000,
+  showNotification: "SHOW_NOTIFICATION",
+  clearNotification: "CLEAR_NOTIFICATION",
 };
 
 // Storage Example

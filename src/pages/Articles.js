@@ -49,16 +49,8 @@ const Articles = ({ catRef }) => {
   }, [catRef]);
 
   return (
-    <PageLayout
-      title={config[catRef].name}
-      onPageRefresh={doRefresh}
-      showPageRefresh={true}
-    >
-      <ArticlesList
-        items={articlesItems}
-        isLoading={articlesLoading}
-        catRef={catRef}
-      />
+    <PageLayout title={config[catRef].name} onPageRefresh={doRefresh} showPageRefresh={true}>
+      <ArticlesList items={articlesItems} isLoading={articlesLoading} catRef={catRef} />
     </PageLayout>
   );
 };

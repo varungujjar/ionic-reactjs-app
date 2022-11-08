@@ -5,8 +5,7 @@ import { useHistory } from "react-router-dom";
 import GlobalContext from "../helpers/Context";
 
 import { Url, LoaderOptions } from "../helpers/Util";
-let api =
-  Url + "index.php?option=com_ajax&group=system&plugin=ajax&format=json";
+let api = Url + "index.php?option=com_ajax&group=system&plugin=ajax&format=json";
 
 export const Auth = () => {
   const authGlobalContext = useContext(GlobalContext);
@@ -27,28 +26,23 @@ export const Auth = () => {
       // console.log(UserSession);
 
       if (UserSession) {
-        ApiAuthSession(
-          "session",
-          UserSession["session"],
-          UserSession["id"],
-          (resultData) => {
-            if (resultData["success"]) {
-              if (Object.keys(resultData["data"]).length > 0) {
-                SyncSession(authGlobalContext, resultData["data"]);
-              } else {
-                Unsetsession(authGlobalContext);
-              }
-            }
-
-            if (!resultData["success"]) {
+        ApiAuthSession("session", UserSession["session"], UserSession["id"], (resultData) => {
+          if (resultData["success"]) {
+            if (Object.keys(resultData["data"]).length > 0) {
+              SyncSession(authGlobalContext, resultData["data"]);
+            } else {
               Unsetsession(authGlobalContext);
             }
-
-            if (resultData["message"]) {
-              presentToast(resultData["message"]);
-            }
           }
-        );
+
+          if (!resultData["success"]) {
+            Unsetsession(authGlobalContext);
+          }
+
+          if (resultData["message"]) {
+            presentToast(resultData["message"]);
+          }
+        });
       } else {
         Unsetsession(authGlobalContext);
       }
@@ -122,9 +116,7 @@ export const Logout = () => {
 
 export const SyncSession = (authGlobalContext, resultData) => {
   const setLocalstorage = async () => {
-    authGlobalContext.setUserAuthSession(
-      await authGlobalContext.db.set("UserSession", resultData)
-    );
+    authGlobalContext.setUserAuthSession(await authGlobalContext.db.set("UserSession", resultData));
     authGlobalContext.setUserAuthRefresh(false);
   };
   setLocalstorage();
@@ -133,9 +125,7 @@ export const SyncSession = (authGlobalContext, resultData) => {
 export const SetSession = (authGlobalContext, resultData) => {
   if (!authGlobalContext.userAuthSession) {
     const setLocalstorage = async () => {
-      authGlobalContext.setUserAuthSession(
-        await authGlobalContext.db.set("UserSession", resultData)
-      );
+      authGlobalContext.setUserAuthSession(await authGlobalContext.db.set("UserSession", resultData));
       authGlobalContext.setUserAuthRefresh(true);
     };
     setLocalstorage();
@@ -147,9 +137,7 @@ export const SetSession = (authGlobalContext, resultData) => {
 export const Unsetsession = (authGlobalContext) => {
   if (authGlobalContext.userAuthSession) {
     const unsetLocalstorage = async () => {
-      authGlobalContext.setUserAuthSession(
-        await authGlobalContext.db.set("UserSession", false)
-      );
+      authGlobalContext.setUserAuthSession(await authGlobalContext.db.set("UserSession", false));
       authGlobalContext.setUserAuthRefresh(true);
     };
     unsetLocalstorage();

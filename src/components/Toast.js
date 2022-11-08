@@ -1,18 +1,16 @@
 import { useEffect } from "react";
 import { useIonToast } from "@ionic/react";
 import { closeCircle } from "ionicons/icons";
+import { showNotificationAction } from "../redux/actions";
 
 //Function to decode the messages from the API and dispatching to Context
-export const setToast = (GlobalContext, data) => {
+export const setToast = (reduxDispatch, data) => {
   const dispatchToastMessages = (message, type) => {
-    GlobalContext.setToastMessages({
-      message: message,
-      type: type,
-    });
+    reduxDispatch(showNotificationAction({ message: message, type: type }));
   };
 
   if (data.message) {
-    dispatchToastMessages(data.message, data.type ? data.type : "primary");
+    dispatchToastMessages(data.message, data.type ? data.type : "warning");
   }
 
   if (data.messages) {

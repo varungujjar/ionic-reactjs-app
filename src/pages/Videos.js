@@ -1,10 +1,24 @@
 import { useEffect, useState, useContext } from "react";
+import { config } from "../config/config";
+import { setToast } from "../components/Toast";
+import { useDispatch } from "react-redux";
+import api from "../config/axios";
+
 import PageLayout from "../components/PageLayout";
 import VideosList from "../components/videos/VideosList";
-import { setToast } from "../components/Toast";
-import GlobalContext from "../helpers/Context";
-import { config } from "../config/config";
-import api from "../config/axios";
+
+const memo = (callback) => {
+  const cache = new Map();
+  return (...args) => {
+    const selector = JSON.stringify(args);
+    if (cache.has(selector)) return cache.get(selector);
+    const value = callback(...args);
+    cache.set(selector, value);
+    return value;
+  };
+};
+
+const memoizedAxiosGet = memo(api.get);
 
 const Videos = () => {
   const [videoCategoriesItems, setVideoCategoriesItems] = useState({});
@@ -14,25 +28,24 @@ const Videos = () => {
   const [videosItems, setVideosItems] = useState({});
   const [videosLoading, setVideosLoading] = useState(true);
 
-  const context = useContext(GlobalContext);
+  const reduxDispatch = useDispatch();
 
   const GetCategoryItems = (categoryId) => {
     setTimeout(async () => {
-      await api
-        .get(null, {
-          params: {
-            type: config.videos.type,
-            featured: categoryId === 0 ? true : false,
-            catid: categoryId ? categoryId : videoCategoriesActiveId,
-          },
-        })
+      await memoizedAxiosGet(null, {
+        params: {
+          type: config.videos.type,
+          featured: categoryId === 0 ? true : false,
+          catid: categoryId ? categoryId : videoCategoriesActiveId,
+        },
+      })
         .then((response) => {
-          setToast(context, response.data);
+          setToast(reduxDispatch, response.data);
           setVideosItems(response.data.data);
           setVideosLoading(false);
         })
         .catch((error) => {
-          setToast(context, {
+          setToast(reduxDispatch, {
             message: error.toJSON().message,
             type: "danger",
           });
@@ -49,12 +62,12 @@ const Videos = () => {
           },
         })
         .then((response) => {
-          setToast(context, response.data);
+          setToast(reduxDispatch, response.data);
           setVideoCategoriesItems(response.data.data);
           setVideoCategoriesLoading(false);
         })
         .catch((error) => {
-          setToast(context, {
+          setToast(reduxDispatch, {
             message: error.toJSON().message,
             type: "danger",
           });
@@ -105,4 +118,9 @@ const Videos = () => {
     </>
   );
 };
+
+const mapStatetoProps = (state) => {
+  return state;
+};
+
 export default Videos;

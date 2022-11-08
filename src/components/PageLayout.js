@@ -2,34 +2,10 @@ import React from "react";
 import "./OwlCarousel.css";
 import PageSubTabs from "./PageSubTabs";
 
-import {
-  IonButtons,
-  IonIcon,
-  IonRefresherContent,
-  IonRefresher,
-  IonContent,
-  IonHeader,
-  IonMenuButton,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-} from "@ionic/react";
+import { IonButtons, IonIcon, IonRefresherContent, IonRefresher, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from "@ionic/react";
 import Toast from "./Toast";
 
-const PageLayout = ({
-  title,
-  icon,
-  tabShow,
-  tabItems,
-  tabDefaultTitle,
-  tabDefaultTitleValue,
-  tabActiveValue,
-  tabIsLoading,
-  tabOnChange,
-  showPageRefresh,
-  onPageRefresh,
-  children,
-}) => {
+const PageLayout = ({ title, icon, tabShow, tabItems, tabDefaultTitle, tabDefaultTitleValue, tabActiveValue, tabIsLoading, tabOnChange, showPageRefresh, onPageRefresh, children }) => {
   return (
     <IonPage>
       <IonHeader>
@@ -75,6 +51,8 @@ PageLayout.defaultProps = {
   tabActiveValue: null,
   tabIsLoading: false,
   showPageRefresh: false,
+  authEnabled: false,
+  authState: false,
 };
 
 export default PageLayout;

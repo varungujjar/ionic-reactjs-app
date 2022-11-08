@@ -1,21 +1,9 @@
-import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonMenu,
-  IonMenuToggle,
-  IonNote,
-  IonAvatar,
-} from "@ionic/react";
-
-import { useEffect, useState, useContext } from "react";
-import GlobalContext from "../helpers/Context";
-import { Url, Notification, Loading } from "../helpers/Util";
-
-import { useLocation } from "react-router-dom";
+import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonAvatar } from "@ionic/react";
+import { useSelector } from "react-redux";
+import { useLocation, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../redux/actions";
+import { config } from "../config/config";
 import {
   documentTextOutline,
   documentTextSharp,
@@ -40,13 +28,6 @@ const appPages = [
     iosIcon: homeOutline,
     mdIcon: homeSharp,
   },
-
-  // {
-  //   title: "Championships",
-  //   url: "/page/championships",
-  //   iosIcon: globeOutline,
-  //   mdIcon: globeSharp,
-  // },
 ];
 
 const communityPages = [
@@ -124,35 +105,26 @@ const infoPages = [
 
 const PageMenu = () => {
   const location = useLocation();
-  const authGlobalContext = useContext(GlobalContext);
-  const [user, setUser] = useState(false);
+  let history = useHistory();
 
-  const getSession = () => {
-    if (authGlobalContext.db) {
-      const getLocalstorage = async () => {
-        const UserSession = await authGlobalContext.db.get("UserSession");
-        setUser(UserSession);
-      };
-      getLocalstorage();
-    }
+  const reduxDispatch = useDispatch();
+  const { storeAuth } = useSelector((state) => {
+    return state;
+  });
+
+  const handleLogout = () => {
+    reduxDispatch(logoutAction());
+    history.push("/");
   };
 
   const UserProfileImage = ({ user }) => {
     if (user && Object.keys(user).length > 0) {
-      const image_src = user.profile_image.rawvalue
-        ? Url + JSON.parse(user.profile_image.rawvalue)["imagefile"]
-        : "./assets/images/article-no-image.png";
+      const image_src = user.profile_image.rawvalue ? config.baseUrl + JSON.parse(user.profile_image.rawvalue)["imagefile"] : "./assets/images/article-no-image.png";
       return <img src={image_src} alt={user.username} />;
     } else {
-      return (
-        <img src="./assets/images/article-no-image.png" alt="not-loggedin" />
-      );
+      return <img src="./assets/images/article-no-image.png" alt="not-loggedin" />;
     }
   };
-
-  useEffect(() => {
-    getSession();
-  }, [authGlobalContext.userAuthRefresh]);
 
   return (
     <IonMenu contentId="main" type="overlay">
@@ -160,44 +132,37 @@ const PageMenu = () => {
         <IonList id="inbox-list">
           <div className="profile-container">
             <IonMenuToggle key={0} autoHide={false}>
-              <IonItem
-                routerLink={user ? "/page/profile" : "/page/login"}
-                routerDirection="forward"
-                lines="none"
-                detail={false}
-                animated="true"
-              >
-                <IonAvatar>
-                  <UserProfileImage user={user} />
-                </IonAvatar>
-                <div>
-                  <IonListHeader>
-                    Hi, {user ? user.name : "Guest"}
-                  </IonListHeader>
-                  <IonNote>{user ? user.username : "View Profile"}</IonNote>
-                </div>
-              </IonItem>
+              {storeAuth.isLoggedin ? (
+                <IonItem routerLink="/page/profile" routerDirection="forward" lines="none" detail={false} animated="true">
+                  <IonAvatar>
+                    <img src="./assets/images/article-no-image.png" alt="not-loggedin" />
+                  </IonAvatar>
+                  <div>
+                    <IonListHeader>Hi, {storeAuth.userSession.name}</IonListHeader>
+                    <IonNote>{storeAuth.userSession.username}</IonNote>
+                  </div>
+                </IonItem>
+              ) : (
+                <IonItem routerLink="/page/login" routerDirection="forward" lines="none" detail={false} animated="true">
+                  <IonAvatar>
+                    <img src="./assets/images/article-no-image.png" alt="not-loggedin" />
+                  </IonAvatar>
+                  <div>
+                    <IonListHeader>Hi, Guest</IonListHeader>
+                    <IonNote>Login</IonNote>
+                  </div>
+                </IonItem>
+              )}
             </IonMenuToggle>
           </div>
+        </IonList>
 
+        <IonList>
           {appPages.map((appPage, index) => {
             return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem
-                  className={
-                    location.pathname === appPage.url ? "selected" : ""
-                  }
-                  routerLink={appPage.url}
-                  routerDirection="forward"
-                  lines="none"
-                  detail={false}
-                  animated="true"
-                >
-                  <IonIcon
-                    slot="start"
-                    ios={appPage.iosIcon}
-                    md={appPage.mdIcon}
-                  />
+              <IonMenuToggle key={index} autoHide={false} class="mt-5">
+                <IonItem className={location.pathname === appPage.url ? "selected" : ""} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false} animated="true">
+                  <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
                   <IonLabel>{appPage.title}</IonLabel>
                 </IonItem>
               </IonMenuToggle>
@@ -205,57 +170,34 @@ const PageMenu = () => {
           })}
         </IonList>
 
-        <IonList id="labels-list">
+        <IonList>
           <IonListHeader>Community</IonListHeader>
           {communityPages.map((appPage, index) => (
             <IonMenuToggle key={index} autoHide={false}>
-              <IonItem
-                className={location.pathname === appPage.url ? "selected" : ""}
-                routerLink={appPage.url}
-                routerDirection="forward"
-                lines="none"
-                detail={false}
-                key={index}
-              >
-                <IonIcon
-                  slot="start"
-                  ios={appPage.iosIcon}
-                  md={appPage.mdIcon}
-                />
+              <IonItem className={location.pathname === appPage.url ? "selected" : ""} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false} key={index}>
+                <IonIcon slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
                 <IonLabel>{appPage.title}</IonLabel>
               </IonItem>
             </IonMenuToggle>
           ))}
         </IonList>
 
-        <IonList id="labels-list">
+        <IonList>
           <IonListHeader>Information</IonListHeader>
           {infoPages.map((appPage, index) => (
             <IonMenuToggle key={index} autoHide={false}>
-              <IonItem
-                className={location.pathname === appPage.url ? "selected" : ""}
-                routerLink={appPage.url}
-                routerDirection="forward"
-                lines="none"
-                detail={false}
-                key={index}
-              >
+              <IonItem className={location.pathname === appPage.url ? "selected" : ""} routerLink={appPage.url} routerDirection="forward" lines="none" detail={false} key={index}>
                 <IonLabel>{appPage.title}</IonLabel>
               </IonItem>
             </IonMenuToggle>
           ))}
         </IonList>
 
-        {user && (
-          <IonList id="labels-list">
+        {storeAuth.isLoggedin && (
+          <IonList>
             <IonListHeader>Account</IonListHeader>
             <IonMenuToggle key={0} autoHide={false}>
-              <IonItem
-                routerDirection="forward"
-                lines="none"
-                detail={false}
-                routerLink={"/page/logout"}
-              >
+              <IonItem routerDirection="forward" lines="none" detail={false} onClick={handleLogout}>
                 <IonLabel>Logout</IonLabel>
               </IonItem>
             </IonMenuToggle>
