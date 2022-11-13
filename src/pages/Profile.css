@@ -1,0 +1,9 @@
+.textarea-wrapper.sc-ion-textarea-md {
+  min-height: 200px;
+}
+
+/* This allows the modal to be auto height as per content */
+ion-modal {
+  --height: auto;
+  align-items: flex-end;
+}

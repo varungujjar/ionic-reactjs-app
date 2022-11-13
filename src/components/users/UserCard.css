@@ -8,5 +8,12 @@
 
 .user-card-thumb img {
   object-fit: cover;
-  height: auto;
+}
+
+.user-card-thumb.placeholder-img {
+  background-color: #efefef;
+}
+
+.user-card-thumb.placeholder-img img {
+  opacity: 0.2;
 }

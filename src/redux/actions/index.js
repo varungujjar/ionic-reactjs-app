@@ -1,5 +1,6 @@
 import { config } from "../../config/config";
 import { setToast } from "../../components/Toast";
+import api from "../../config/axios";
 
 export const showNotificationAction = (messageObject) => {
   return {
@@ -18,7 +19,7 @@ export const clearNotificationAction = (messageObject) => {
 export const logoutAction = () => {
   return (dispatch) => {
     setToast(dispatch, { message: "Logged out successfully.", type: "success" });
-    return dispatch({
+    dispatch({
       type: "AUTH_LOGOUT",
     });
   };
@@ -30,9 +31,26 @@ export const loginAction = (sessionObject = {}) => {
       setToast(dispatch, { message: `Welcome back ${sessionObject.name}`, type: "success" });
     }
 
-    return dispatch({
+    dispatch({
       type: "AUTH_LOGIN",
       payload: sessionObject,
+    });
+  };
+};
+
+export const refreshSessionAction = (sessionObject = {}) => {
+  return async (dispatch) => {
+    await api.get(null, { params: { type: "session", session: sessionObject.session, uid: sessionObject.uid } }).then((response) => {
+      if (response.data.data.session) {
+        dispatch({
+          type: "AUTH_REFRESH",
+          payload: response.data.data,
+        });
+      } else {
+        dispatch({
+          type: "AUTH_LOGOUT",
+        });
+      }
     });
   };
 };

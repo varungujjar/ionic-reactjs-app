@@ -25,22 +25,22 @@ const Bookmarks = () => {
   const [bookmarksNews, setBookmarksNews] = useState([]);
   const [bookmarksVideos, setBookmarksVideos] = useState([]);
 
-  const { storeAuth } = useSelector((state) => {
-    return state;
+  const { userSession } = useSelector((state) => {
+    return state.storeAuth;
   });
 
   const setBookmarksFromUserSession = () => {
     setTimeout(() => {
-      if (storeAuth.userSession.articles.length > 0) {
-        setBookmarksArticles(storeAuth.userSession.articles);
+      if (userSession.articles.length > 0) {
+        setBookmarksArticles(userSession.articles);
       }
 
-      if (storeAuth.userSession.news.length > 0) {
-        setBookmarksNews(storeAuth.userSession.news);
+      if (userSession.news.length > 0) {
+        setBookmarksNews(userSession.news);
       }
 
-      if (storeAuth.userSession.videos.length > 0) {
-        setBookmarksVideos(storeAuth.userSession.videos);
+      if (userSession.videos.length > 0) {
+        setBookmarksVideos(userSession.videos);
       }
       setBookmarksCategoriesLoading(false);
     }, config.timeOutDelay);

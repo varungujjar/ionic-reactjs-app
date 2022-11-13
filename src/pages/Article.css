@@ -6,3 +6,12 @@
   object-fit: cover;
   width: 100%;
 }
+.placeholder {
+  margin-right: 5px;
+  border-radius: 3px;
+  opacity: 0.1 !important;
+}
+
+img.placeholder {
+  opacity: 0.2 !important;
+}

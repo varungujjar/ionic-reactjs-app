@@ -74,12 +74,12 @@ const infoPages = [
     mdIcon: newspaperSharp,
   },
 
-  {
-    title: "Leadership",
-    url: "/page/leadership",
-    iosIcon: newspaperOutline,
-    mdIcon: newspaperSharp,
-  },
+  // {
+  //   title: "Leadership",
+  //   url: "/page/leadership",
+  //   iosIcon: newspaperOutline,
+  //   mdIcon: newspaperSharp,
+  // },
 
   {
     title: "Contact Us",

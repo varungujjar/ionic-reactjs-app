@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route, BrowserRouter, Switch } from "react-router-dom";
-import { useHistory, useLocation } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact, IonRouteRe } from "@ionic/react";
+import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from "@ionic/react";
 import { RenderToast } from "./components/Toast";
 import { Storage, Drivers } from "@ionic/storage";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,8 +23,6 @@ import Register from "./auth/Register";
 import Profile from "./pages/Profile";
 import Bookmarks from "./pages/Bookmarks";
 
-import { setToast } from "./components/Toast";
-
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
 
@@ -39,6 +36,7 @@ setupIonicReact();
 
 const App = () => {
   const [db, setDb] = useState(null);
+  let history = useHistory();
 
   const reduxDispatch = useDispatch();
   const { storeNotifications, storeAuth } = useSelector((state) => {
@@ -47,11 +45,9 @@ const App = () => {
   });
 
   useEffect(() => {
-    // if (storeAuth.isLoggedin) {
-    //   setToast(reduxDispatch, { message: `Welcome back ${storeAuth.userSession.name}`, type: "success" });
-    // } else {
-    //   setToast(reduxDispatch, { message: "Logged out successfully.", type: "success" });
-    // }
+    if (!storeAuth.isLoggedin) {
+      history.push("/");
+    }
   }, [storeAuth.isLoggedin]);
 
   return (
@@ -71,6 +67,7 @@ const App = () => {
             <PageMenu />
             <PageTabs>
               <IonRouterOutlet id="main" ionPage>
+                {/* Using of <Switch> to fix proper unmount when transitioning between pages.Known Bug since Ionic V5 */}
                 <Switch>
                   <Route path="/" exact>
                     <Redirect to="/page/home" />

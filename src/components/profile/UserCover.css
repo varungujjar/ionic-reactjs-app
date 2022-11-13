@@ -1,0 +1,9 @@
+.btn-image-edit {
+  position: absolute;
+  top: 70px;
+  z-index: 99;
+  right: 30px;
+  border-radius: 50px !important;
+  height: 43px;
+  width: 43px;
+}
