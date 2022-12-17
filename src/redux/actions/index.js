@@ -41,12 +41,13 @@ export const loginAction = (sessionObject = {}) => {
 export const refreshSessionAction = (sessionObject = {}) => {
   return async (dispatch) => {
     await api.get(null, { params: { type: "session", session: sessionObject.session, uid: sessionObject.uid } }).then((response) => {
-      if (response.data.data.session) {
+      if (response.data.data && response.data.data.session) {
         dispatch({
           type: "AUTH_REFRESH",
           payload: response.data.data,
         });
       } else {
+        // logoutAction();
         dispatch({
           type: "AUTH_LOGOUT",
         });

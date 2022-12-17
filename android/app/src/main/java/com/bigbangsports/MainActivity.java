@@ -1,4 +1,4 @@
-package com.constellationesports;
+package com.bigbangsports;
 
 import android.os.Bundle;
 import com.getcapacitor.BridgeActivity;

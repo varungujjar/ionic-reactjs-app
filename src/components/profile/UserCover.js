@@ -23,7 +23,7 @@ const UserCover = ({ image, alt, isLoading, editCallback }) => {
 };
 
 UserCover.defaultProps = {
-  image: "./assets/images/article-no-image.png",
+  image: JSON.stringify({}),
   alt: "",
 };
 

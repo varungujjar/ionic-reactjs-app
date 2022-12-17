@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Esports</string>
-    <string name="title_activity_main">Esports</string>
+    <string name="app_name">Big Bang Sports</string>
+    <string name="title_activity_main">Big Bang Sports</string>
     <string name="package_name">com.constellationesports</string>
     <string name="custom_url_scheme">com.constellationesports</string>
     <color name="myColor">#171027</color>

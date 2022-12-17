@@ -31,6 +31,15 @@ export const ArticleCardCarousel = ({ articleTitle, articleAlias, articleId, art
   );
 };
 
+ArticleCardCarousel.defaultProps = {
+  articleTitle: "no-title",
+  articleAlias: "no-alias",
+  articleId: 0,
+  articleIntroText: "no-intro-text",
+  articleImages: JSON.stringify({}),
+  articleCreated: "2022-09-06 11:09:39",
+};
+
 export const ArticlesCardPlaceholder = () => {
   return (
     <Card>

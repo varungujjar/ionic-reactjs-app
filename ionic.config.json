@@ -1,7 +1,7 @@
 {
-  "name": "esports",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
+	"name": "esports",
+	"integrations": {
+		"capacitor": {}
+	},
+	"type": "react"
 }

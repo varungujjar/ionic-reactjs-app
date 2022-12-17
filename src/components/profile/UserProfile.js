@@ -26,7 +26,7 @@ const UserProfile = ({ image, username, name, isLoading, editCallback }) => {
 };
 
 UserProfile.defaultProps = {
-  image: "./assets/images/article-no-image.png",
+  image: JSON.stringify({}),
   username: "",
   name: "",
   isLoading: true,
