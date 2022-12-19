@@ -1,25 +1,23 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import { BrowserRouter } from "react-router-dom";
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-import reportWebVitals from "./reportWebVitals";
-import { Provider } from "react-redux";
-import thunk from "redux-thunk";
-import { store } from "./redux/store";
+import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import Pages from './pages';
 
-const container = document.getElementById("root");
+const container = document.getElementById('root');
 const root = createRoot(container!);
 
 root.render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </Provider>
-  // </React.StrictMode>
+	// <React.StrictMode>
+	<Provider store={store}>
+		<BrowserRouter>
+			<Pages />
+		</BrowserRouter>
+	</Provider>
+	// </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

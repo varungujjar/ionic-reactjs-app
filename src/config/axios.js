@@ -13,13 +13,13 @@ let api = axios.create({
 });
 
 //Reserved for future to catch all errors in one placec
-api.interceptors.response.use(
-	(response) => response,
-	(error) => {
-		// console.log(error);
-		// whatever you want to do with the error
-		throw error;
-	}
-);
+// api.interceptors.response.use(
+// 	(response) => response,
+// 	(error) => {
+// 		// console.log(error);
+// 		// whatever you want to do with the error
+// 		throw error;
+// 	}
+// );
 
 export default api;

@@ -12,9 +12,7 @@ const Card = ({ onClickData, onClick, children }) => {
 Card.defaultProps = {};
 
 Card.propTypes = {
-	onClickData: PropTypes.number,
 	onClick: PropTypes.func,
-	children: PropTypes.array,
 };
 
 export default Card;

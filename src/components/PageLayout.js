@@ -1,18 +1,6 @@
-import './OwlCarousel.css';
 import PageSubTabs from './PageSubTabs';
-import PropTypes from 'prop-types';
 
-import {
-	IonButtons,
-	IonRefresherContent,
-	IonRefresher,
-	IonContent,
-	IonHeader,
-	IonMenuButton,
-	IonPage,
-	IonTitle,
-	IonToolbar,
-} from '@ionic/react';
+import { IonButtons, IonRefresherContent, IonRefresher, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 
 const PageLayout = ({
 	title,
@@ -60,23 +48,6 @@ const PageLayout = ({
 			</IonContent>
 		</IonPage>
 	);
-};
-
-PageLayout.propTypes = {
-	title: PropTypes.string,
-	icon: PropTypes.string,
-	tabShow: PropTypes.bool,
-	tabItems: PropTypes.object,
-	tabDefaultTitle: PropTypes.string,
-	tabDefaultTitleValue: PropTypes.string,
-	tabActiveValue: PropTypes.string,
-	tabIsLoading: PropTypes.bool,
-	showPageRefresh: PropTypes.bool,
-	authEnabled: PropTypes.bool,
-	authState: PropTypes.bool,
-	tabOnChange: PropTypes.func,
-	onPageRefresh: PropTypes.func,
-	children: PropTypes.element,
 };
 
 PageLayout.defaultProps = {

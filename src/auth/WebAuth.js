@@ -59,7 +59,7 @@ const WebAuth = () => {
 		if (storeAuth.isLoggedin) {
 			history.push('/page/profile');
 		}
-	}, [storeAuth.isLoggedin]);
+	}, [storeAuth.isLoggedin, history]);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -69,14 +69,7 @@ const WebAuth = () => {
 					name="username"
 					rules={{ required: true }}
 					render={({ field: { value, onBlur, onChange } }) => (
-						<IonInput
-							type="text"
-							onIonBlur={onBlur}
-							value={value}
-							onInput={onChange}
-							onIonChange={onChange}
-							placeholder="Username"
-						/>
+						<IonInput type="text" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Username" />
 					)}
 				/>
 				{errors.username && <div className="input-error">Username is required</div>}
@@ -87,14 +80,7 @@ const WebAuth = () => {
 					name="password"
 					rules={{ required: true }}
 					render={({ field: { value, onBlur, onChange } }) => (
-						<IonInput
-							type="password"
-							onIonBlur={onBlur}
-							value={value}
-							onInput={onChange}
-							onIonChange={onChange}
-							placeholder="Password"
-						/>
+						<IonInput type="password" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Password" />
 					)}
 				/>
 				{errors.password && <div className="input-error">Password is required</div>}
