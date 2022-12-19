@@ -1,6 +1,7 @@
 import { IonReactRouter } from '@ionic/react-router';
 import { IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import PageMenu from '../components/PageMenu';
 import PageTabs from '../components/PageTabs';
@@ -11,12 +12,16 @@ import Article from '../pages/Articles/Article';
 import Articles from '../pages/Articles';
 import Videos from '../pages/Videos';
 import Contact from '../pages/Contact';
-import Login from '../pages/Login';
+import Login from '../auth/Login';
 import Register from '../auth/Register';
 import Profile from '../pages/Profile';
 import Bookmarks from '../pages/Bookmarks';
 
 const Routes = () => {
+	const { storeAuth } = useSelector((state) => {
+		return state;
+	});
+
 	return (
 		<IonReactRouter>
 			<IonSplitPane>

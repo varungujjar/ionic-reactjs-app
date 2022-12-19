@@ -1,51 +1,46 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { documentText } from 'ionicons/icons';
 import PageLayout from '../../components/PageLayout';
 import { StaticPagePlaceHolder, StaticPage } from './StaticPage';
 import api from '../../config/axios';
 import { config } from '../../config/config';
 import { setToast } from '../../components/Toast';
-import GlobalContext from '../../helpers/Context';
+import { useDispatch } from 'react-redux';
 
 const Static = ({ id }) => {
-	const [articlesItems, setArticlesItems] = useState({});
-	const [articlesLoading, setArticlesLoading] = useState(true);
+	const [articlesItems, setArticlesItems] = useState({ data: {}, loading: true });
 
-	const context = useContext(GlobalContext);
-
-	const GetArticlesItems = () => {
-		setTimeout(async () => {
-			await api
-				.get(null, {
-					params: {
-						type: config.articles.type,
-						id: id,
-					},
-				})
-				.then((response) => {
-					setToast(context, response.data);
-					setArticlesItems(response.data.data);
-					setArticlesLoading(false);
-				})
-				.catch((error) => {
-					setToast(context, {
-						message: error.toJSON().message,
-						type: 'danger',
-					});
-				});
-		}, config.timeOutDelay);
-	};
+	const reduxDispatch = useDispatch();
 
 	useEffect(() => {
-		GetArticlesItems();
-		return () => {
-			setArticlesLoading(true);
+		const GetArticlesItems = () => {
+			setTimeout(async () => {
+				await api
+					.get(null, {
+						params: {
+							type: config.articles.type,
+							id: id,
+						},
+					})
+					.then((response) => {
+						setToast(reduxDispatch, response.data);
+						setArticlesItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
+					})
+					.catch((error) => {
+						setToast(reduxDispatch, {
+							message: error.toJSON().message,
+							type: 'danger',
+						});
+					});
+			}, config.timeOutDelay);
 		};
-	}, [id]);
+
+		GetArticlesItems();
+	}, [id, reduxDispatch]);
 
 	return (
-		<PageLayout title={articlesItems.title ? articlesItems.title : null} icon={documentText}>
-			{Object.keys(articlesItems).length > 0 && !articlesLoading ? <StaticPage item={articlesItems} /> : <StaticPagePlaceHolder />}
+		<PageLayout title={articlesItems.data.title ? articlesItems.data.title : null} icon={documentText}>
+			{Object.keys(articlesItems.data).length > 0 && !articlesItems.loading ? <StaticPage data={articlesItems} /> : <StaticPagePlaceHolder />}
 		</PageLayout>
 	);
 };

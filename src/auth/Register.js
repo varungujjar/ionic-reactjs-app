@@ -1,27 +1,15 @@
-import { useEffect, useState } from 'react';
-import {
-	IonButtons,
-	useIonToast,
-	IonButton,
-	IonInput,
-	IonItem,
-	IonContent,
-	IonHeader,
-	IonBackButton,
-	IonPage,
-	IonToolbar,
-} from '@ionic/react';
-import { ApiAuth } from '../helpers/Api';
-import { Loading } from '../helpers/Util';
 import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useIonToast, IonButton, IonInput, IonItem } from '@ionic/react';
+
+import { config } from '../config/config';
+import { ApiAuth } from '../helpers/Api';
+import PageLayout from '../components/PageLayout';
 
 const Register = () => {
-	const [showLoader, setshowLoader] = useState(false);
 	let history = useHistory();
 	const [present] = useIonToast();
-	// const authGlobalContext = useContext(GlobalContext);
 
 	const presentToast = (message, type = null) => {
 		present({
@@ -33,7 +21,6 @@ const Register = () => {
 	};
 
 	const onSubmit = (data) => {
-		setshowLoader(true);
 		ApiAuth('register', data, (resultData) => {
 			if (resultData['message']) {
 				console.log(resultData);
@@ -51,8 +38,6 @@ const Register = () => {
 			if (resultData['success']) {
 				history.push('/page/home');
 			}
-
-			setshowLoader(false);
 		});
 	};
 
@@ -72,117 +57,77 @@ const Register = () => {
 		reValidateMode: 'onChange',
 	});
 
-	useEffect(() => {}, []);
-
 	return (
-		<IonPage className="ion-page login-page">
-			<IonHeader>
-				<IonToolbar>
-					<IonButtons slot="start">
-						<IonBackButton defaultHref="/page/home" />
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent fullscreen>
-				<Loading show={showLoader} />
-				<div className="login-container center-container">
-					<div className="logo">
-						<img src="./assets/images/about-weare.png" alt="logo" />
-					</div>
-					<h2>Create an Account</h2>
-					<p className="mb-2 text-muted">
-						To view or manage your profile <br></br>you will need to create an account.
-					</p>
-					<form onSubmit={handleSubmit(onSubmit)}>
-						<IonItem>
-							<Controller
-								control={control}
-								name="name"
-								rules={{ required: true }}
-								render={({ field: { value, onBlur, onChange } }) => (
-									<IonInput
-										type="text"
-										onIonBlur={onBlur}
-										value={value}
-										onInput={onChange}
-										onIonChange={onChange}
-										placeholder="Full Name"
-									/>
-								)}
-							/>
-							{errors.name && <div className="input-error">Full Name is required</div>}
-						</IonItem>
-
-						<IonItem>
-							<Controller
-								control={control}
-								name="username"
-								rules={{ required: true }}
-								render={({ field: { value, onBlur, onChange } }) => (
-									<IonInput
-										type="text"
-										onIonBlur={onBlur}
-										value={value}
-										onInput={onChange}
-										onIonChange={onChange}
-										placeholder="Username"
-									/>
-								)}
-							/>
-							{errors.username && <div className="input-error">Username is required</div>}
-						</IonItem>
-
-						<IonItem>
-							<Controller
-								control={control}
-								name="email"
-								rules={{ required: true }}
-								render={({ field: { value, onBlur, onChange } }) => (
-									<IonInput
-										type="email"
-										onIonBlur={onBlur}
-										value={value}
-										onInput={onChange}
-										onIonChange={onChange}
-										placeholder="Email"
-									/>
-								)}
-							/>
-							{errors.email && <div className="input-error">Email is required</div>}
-						</IonItem>
-
-						<IonItem>
-							<Controller
-								control={control}
-								name="password"
-								rules={{ required: true }}
-								render={({ field: { value, onBlur, onChange } }) => (
-									<IonInput
-										type="password"
-										onIonBlur={onBlur}
-										value={value}
-										onInput={onChange}
-										onIonChange={onChange}
-										placeholder="Password"
-									/>
-								)}
-							/>
-							{errors.password && <div className="input-error">Password is required</div>}
-						</IonItem>
-
-						<IonButton expand="block" type="submit" class="w-100">
-							Register
-						</IonButton>
-						<p style={{ fontSize: 'medium' }}>
-							Already have an account?{' '}
-							<Link to="/page/login" className="text-highlight">
-								Login
-							</Link>
-						</p>
-					</form>
+		<PageLayout title={config.register.name}>
+			<div className="login-container center-container">
+				<div className="logo">
+					<img src="./assets/images/about-weare.png" alt="logo" />
 				</div>
-			</IonContent>
-		</IonPage>
+				<h2>Create an Account</h2>
+				<p className="mb-2 text-muted">
+					To view or manage your profile <br></br>you will need to create an account.
+				</p>
+				<form onSubmit={handleSubmit(onSubmit)}>
+					<IonItem>
+						<Controller
+							control={control}
+							name="name"
+							rules={{ required: true }}
+							render={({ field: { value, onBlur, onChange } }) => (
+								<IonInput type="text" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Full Name" />
+							)}
+						/>
+						{errors.name && <div className="input-error">Full Name is required</div>}
+					</IonItem>
+
+					<IonItem>
+						<Controller
+							control={control}
+							name="username"
+							rules={{ required: true }}
+							render={({ field: { value, onBlur, onChange } }) => (
+								<IonInput type="text" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Username" />
+							)}
+						/>
+						{errors.username && <div className="input-error">Username is required</div>}
+					</IonItem>
+
+					<IonItem>
+						<Controller
+							control={control}
+							name="email"
+							rules={{ required: true }}
+							render={({ field: { value, onBlur, onChange } }) => (
+								<IonInput type="email" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Email" />
+							)}
+						/>
+						{errors.email && <div className="input-error">Email is required</div>}
+					</IonItem>
+
+					<IonItem>
+						<Controller
+							control={control}
+							name="password"
+							rules={{ required: true }}
+							render={({ field: { value, onBlur, onChange } }) => (
+								<IonInput type="password" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Password" />
+							)}
+						/>
+						{errors.password && <div className="input-error">Password is required</div>}
+					</IonItem>
+
+					<IonButton expand="block" type="submit" class="w-100">
+						Register
+					</IonButton>
+					<p style={{ fontSize: 'medium' }}>
+						Already have an account?
+						<Link to="/page/login" className="text-highlight">
+							Login
+						</Link>
+					</p>
+				</form>
+			</div>
+		</PageLayout>
 	);
 };
 

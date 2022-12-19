@@ -50,6 +50,12 @@ export const config = {
 		icon: documentText,
 		path: '/page/login',
 	},
+	register: {
+		type: 'register',
+		name: 'Register',
+		icon: documentText,
+		path: '/page/register',
+	},
 	aboutus: { type: 'articles', id: 1 },
 	leadership: { type: 'articles', id: 49 },
 	community: { type: 'articles', id: 3 },
