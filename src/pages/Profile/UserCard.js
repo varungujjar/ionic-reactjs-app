@@ -1,14 +1,23 @@
 import Card from '../../components/Card';
 import { config } from '../../config/config';
+import { useHistory } from 'react-router-dom';
+
 import './UserCard.css';
 
 export const UserCardCarousel = ({ userFullName, userId, userName, userProfileImage }) => {
+	let history = useHistory();
+
 	const image_src = userProfileImage.rawvalue
 		? config.baseUrl + JSON.parse(userProfileImage.rawvalue)['imagefile']
 		: './assets/images/article-no-image.png';
 
+	const onClickHandler = (id) => {
+		console.log(id);
+		history.push(`/page/profile/${id}`);
+	};
+
 	return (
-		<Card>
+		<Card onClickData={userId} onClick={(id) => onClickHandler(id)}>
 			<div className="d-flex align-items-center p-3">
 				<div className="flex-shrink-0 user-card-thumb">
 					<img src={image_src} alt={userName} />

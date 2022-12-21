@@ -1,5 +1,6 @@
 import { config } from '../config/config';
 import PageLayout from '../components/PageLayout';
+
 import WebAuth from './WebAuth';
 import FacebookAuth from './FacebookAuth';
 import GoogleOAuth from './GoogleAuth';

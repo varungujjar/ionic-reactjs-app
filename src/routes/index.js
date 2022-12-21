@@ -64,7 +64,6 @@ const Routes = () => {
 							{/* <Route path="/page/gamer/:id" exact component={Gamer} /> */}
 							<Route path="/page/register" exact component={Register} />
 							<Route path="/page/login" exact component={Login} />
-							<Route path="/page/gamer/:id" exact component={Profile} />
 							<Route
 								exact
 								path="/page/bookmarks"
@@ -72,6 +71,7 @@ const Routes = () => {
 									return storeAuth.isLoggedin ? <Bookmarks /> : <Redirect exact to="/page/login" />;
 								}}
 							/>
+							<Route path="/page/profile/:id" exact component={Profile} />
 
 							<Route
 								exact

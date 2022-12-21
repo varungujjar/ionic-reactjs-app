@@ -16,7 +16,7 @@ const UsersSlider = ({ data }) => {
 						userFullName={user.name}
 						userId={user.id}
 						userName={user.username}
-						userProfileImage={user['profile-image']}
+						userProfileImage={user['profile_image']}
 					/>
 				))
 			) : (

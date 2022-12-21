@@ -1,34 +1,34 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { config } from '../../config/config';
-import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
-import { IonInput, IonTextarea, IonButton, IonItem } from '@ionic/react';
+import { IonInput, IonTextarea, IonButton, IonItem, IonModal } from '@ionic/react';
 import api from '../../config/axios';
 import { setToast } from '../../components/Toast';
-import { refreshSessionAction, logoutAction } from '../../redux/actions';
+
+import { IonIcon } from '@ionic/react';
+import { camera, pencil } from 'ionicons/icons';
 
 import PageLayout from '../../components/PageLayout';
-import UserProfile from './UserProfile';
-import UserCover from './UserCover';
-import UserGames from './UserGames';
-import UserModal from './UserModal';
-import UserBiography from './UserBio';
+import ProfileSkeleton from './ProfileSkeleton';
+
+import { refreshSessionAction } from '../../redux/actions';
 
 import './Profile.css';
 
-const Profile = (props) => {
-	const [userLoading, setUserLoading] = useState(true);
-	const [editProfile, setEditProfile] = useState(false);
-	const [editProfilePicture, setEditProfilePicture] = useState(false);
-	const [editProfileCover, setEditProfileCover] = useState(false);
-	const [userSession, setUserSession] = useState({});
-	let userForm = {};
-	let history = useHistory();
-	const reduxDispatch = useDispatch();
+const Profile = () => {
+	const { id } = useParams();
 
+	const [profileData, setProfileData] = useState({ data: {}, loading: true });
+	const { loading, data } = profileData;
+
+	const [editData, setEditData] = useState({ biography: false, profile_image: false, cover_image: false });
+	const [profileFormData, setProfileFormData] = useState({});
+	const [profileFormAutoSubmit, setProfileFormAutoSubmit] = useState(false);
+
+	const reduxDispatch = useDispatch();
 	const { storeAuth } = useSelector((state) => {
-		console.log(state);
 		return state;
 	});
 
@@ -43,46 +43,40 @@ const Profile = (props) => {
 		reValidateMode: 'onChange',
 	});
 
-	const onChangeFieldFile = (event) => {
-		// console.log(userForm);
-		// userForm = { ...userForm, [event.target.name]: event.target.files[0] };
-
-		let formdata = new FormData();
-		formdata.append(event.target.name, event.target.files[0]);
-		userForm = formdata;
-		submitForm();
+	const onChangeInputHandler = (event) => {
+		setProfileFormData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
 	};
 
-	const onChangeFieldInputs = (event) => {
-		userForm = { ...userForm, [event.target.name]: event.target.value };
-		console.log(userForm);
+	const onChangeImageHandler = (event) => {
+		setProfileFormData((prev) => ({ ...prev, [event.target.name]: event.target.files[0] }));
+		setProfileFormAutoSubmit(true);
 	};
 
-	const submitForm = async () => {
+	const onPageRefresh = (event) => {
+		reduxDispatch(refreshSessionAction(profileData.data));
+		event.detail.complete();
+	};
+
+	const submitForm = async (event) => {
+		let formData = new FormData();
+
+		for (let key in profileFormData) {
+			formData.append(key, profileFormData[key]);
+			console.log(key + ', ' + profileFormData[key]);
+		}
+
 		await api
-			.get(null, {
+			.post(null, formData, {
 				params: {
 					type: config.profile.type,
-					uid: userSession.id,
-					session: userSession.session,
-					...userForm,
-				},
-				headers: {
-					'Content-Type': 'multipart/form-data',
+					uid: data.id,
+					session: data.session,
 				},
 			})
 			.then((response) => {
-				userForm = {};
-				setEditProfile(false); //close modal pop
-				setUserLoading(true);
-				if (response.data.data) {
-					setToast(reduxDispatch, response.data);
-					setUserLoading(true);
-					reduxDispatch(refreshSessionAction({ session: userSession.session, uid: userSession.id }));
-				} else {
-					setEditProfile(false); //close modal pop
-					reduxDispatch(logoutAction());
-				}
+				setToast(reduxDispatch, response.data);
+				reduxDispatch(refreshSessionAction(profileData.data));
+				setEditData((prev) => ({ ...prev, biography: false, profile_image: false, cover_image: false }));
 			})
 			.catch((error) => {
 				setToast(reduxDispatch, {
@@ -90,65 +84,115 @@ const Profile = (props) => {
 					type: 'danger',
 				});
 			});
+		setProfileFormData({});
 	};
 
 	useEffect(() => {
-		const getProfile = () => {
-			setTimeout(() => {
-				setUserLoading(false);
+		if (profileFormAutoSubmit) {
+			submitForm();
+			setProfileFormAutoSubmit(false);
+		}
+
+		const fetchProfile = () => {
+			setTimeout(async () => {
+				await api
+					.get(null, {
+						params: {
+							type: config.users.type,
+							id: id,
+						},
+					})
+					.then((response) => {
+						setToast(reduxDispatch, response.data);
+						setProfileData((prev) => ({
+							...prev,
+							data: { ...response.data.data },
+							loading: false,
+						}));
+					})
+					.catch((error) => {
+						setToast(reduxDispatch, {
+							message: error.toJSON().message,
+							type: 'danger',
+						});
+					});
 			}, config.timeOutDelay);
 		};
-		getProfile();
-
-		if (props.match && props.match.params.id) {
-			//get Profile details by id
-			setUserSession({});
+		if (id) {
+			fetchProfile();
 		} else {
-			setUserSession(storeAuth.userSession);
+			setTimeout(() => {
+				setProfileData((prev) => ({ ...prev, data: storeAuth.userSession, loading: false }));
+			}, config.timeOutDelay);
 		}
+	}, [id, JSON.stringify(storeAuth.userSession), profileFormAutoSubmit]);
 
-		if (!storeAuth.isLoggedin) {
-			setEditProfile(false);
-			if (!editProfile) {
-				history.push('/page/login');
-			}
-		}
-	}, [history, props.match, storeAuth.isLoggedin, userForm, storeAuth.userSession, editProfile, userLoading]);
+	if (loading)
+		return (
+			<PageLayout title="Profile">
+				<ProfileSkeleton />
+			</PageLayout>
+		);
 
-	const onPageRefresh = (event) => {
-		setUserLoading(true);
-		event.detail.complete();
-	};
+	const { name, username, email, biography, cover_image, profile_image, articles, news, videos, games } = data;
+
+	const coverImageDecode = JSON.parse(cover_image.rawvalue);
+	const coverImageSrc = coverImageDecode.imagefile && config.baseUrl + coverImageDecode.imagefile;
+
+	const profileImageDecode = JSON.parse(profile_image.rawvalue);
+	const profileImageSrc = profileImageDecode.imagefile && config.baseUrl + profileImageDecode.imagefile;
 
 	return (
 		<PageLayout title="Profile" showPageRefresh={true} onPageRefresh={onPageRefresh}>
-			<>
-				<UserCover
-					image={userSession.cover_image && userSession.cover_image.rawvalue}
-					alt={userSession.username && userSession.username}
-					isLoading={userLoading}
-					editCallback={() => setEditProfileCover(true)}
-				/>
-				<UserProfile
-					image={userSession.profile_image && userSession.profile_image.rawvalue}
-					username={userSession.username && userSession.username}
-					name={userSession.name && userSession.name}
-					isLoading={userLoading}
-					editCallback={() => setEditProfilePicture(true)}
-				/>
-				<UserBiography
-					bioContent={userSession.biography && userSession.biography.rawvalue}
-					isLoading={userLoading}
-					editCallback={() => setEditProfile(true)}
-				/>
-				<UserGames items={userSession.games && userSession.games} isLoading={userLoading} />
+			<div className="article-image-full">
+				<img src={coverImageSrc} alt={username} className="articleImage" style={{ height: '250px', width: '100%', objectFit: 'cover' }} />{' '}
+				{data.session && (
+					<button className="btn btn-primary btn-image-edit" onClick={() => setEditData((prev) => ({ ...prev, cover_image: true }))}>
+						<IonIcon icon={camera} />
+					</button>
+				)}
+			</div>
 
-				<UserModal
-					isOpen={editProfile}
-					onDidDismiss={() => {
-						setEditProfile(false);
-					}}
-				>
+			<div className="profile-image">
+				<div className="profile-image-wrapper">
+					<img src={profileImageSrc} alt={username} className="articleImage" />
+					{data.session && (
+						<button className="btn-profile-image-edit btn btn-primary" onClick={() => setEditData((prev) => ({ ...prev, profile_image: true }))}>
+							<IonIcon icon={camera} />
+						</button>
+					)}
+				</div>
+
+				<div className="profile-details-wrapper">
+					<h5>{username}</h5>
+					<span className="profile-name">{name}</span>
+				</div>
+			</div>
+
+			<h6>Biography</h6>
+			<div
+				dangerouslySetInnerHTML={{
+					__html: biography.rawvalue ? biography.rawvalue : 'No Biography',
+				}}
+			/>
+			{data.session && (
+				<button className="btn btn-primary btn-bio-edit" onClick={() => setEditData((prev) => ({ ...prev, biography: true }))}>
+					<IonIcon icon={pencil} />
+				</button>
+			)}
+
+			<div className="mt-4">
+				<h6>Games</h6>
+				<div className="text-muted mb-4">No Games Selected</div>
+			</div>
+
+			<IonModal
+				isOpen={editData.biography}
+				onDidDismiss={() => {
+					setEditData((prev) => ({ ...prev, biography: false }));
+				}}
+			>
+				<div className="container" style={{ padding: '20px 20px' }}>
 					<h6 className="text-bold">Edit Profile Details</h6>
 
 					<IonItem>
@@ -156,7 +200,7 @@ const Profile = (props) => {
 							control={control}
 							name="name"
 							rules={{ required: false }}
-							defaultValue={userSession.name && userSession.name}
+							defaultValue={name}
 							render={({ field: { value, onBlur, onChange } }) => (
 								<IonInput
 									type="text"
@@ -164,7 +208,7 @@ const Profile = (props) => {
 									onIonBlur={onBlur}
 									onInput={(e) => {
 										onChange(e);
-										onChangeFieldInputs(e);
+										onChangeInputHandler(e);
 									}}
 									onIonChange={onChange}
 									placeholder="Full Name"
@@ -178,16 +222,16 @@ const Profile = (props) => {
 							control={control}
 							name="biography"
 							rules={{ required: false }}
-							defaultValue={userSession.biography && userSession.biography.rawvalue}
+							defaultValue={biography.rawvalue}
 							render={({ field: { value, onBlur, onChange } }) => (
 								<IonTextarea
 									value={value}
 									onIonBlur={onBlur}
 									onInput={(e) => {
 										onChange(e);
-										onChangeFieldInputs(e);
+										onChangeInputHandler(e);
 									}}
-									onIonChange={onChangeFieldInputs}
+									onIonChange={onChangeInputHandler}
 									placeholder="Biography"
 									name="biography"
 								/>
@@ -200,32 +244,36 @@ const Profile = (props) => {
 							Save
 						</IonButton>
 					</div>
-				</UserModal>
+				</div>
+			</IonModal>
 
-				<UserModal
-					isOpen={editProfilePicture}
-					onDidDismiss={() => {
-						setEditProfilePicture(false);
-					}}
-				>
+			<IonModal
+				isOpen={editData.profile_image}
+				onDidDismiss={() => {
+					setEditData((prev) => ({ ...prev, profile_image: false }));
+				}}
+			>
+				<div className="container" style={{ padding: '20px 20px' }}>
 					<IonButton expand="block" type="submit" class="w-100 fixed-button">
 						Upload Profile Picture
-						<input type="file" name="profile_image" onChange={onChangeFieldFile} />
+						<input type="file" name="profile_image" onChange={onChangeImageHandler} />
 					</IonButton>
-				</UserModal>
+				</div>
+			</IonModal>
 
-				<UserModal
-					isOpen={editProfileCover}
-					onDidDismiss={() => {
-						setEditProfileCover(false);
-					}}
-				>
+			<IonModal
+				isOpen={editData.cover_image}
+				onDidDismiss={() => {
+					setEditData((prev) => ({ ...prev, cover_image: false }));
+				}}
+			>
+				<div className="container" style={{ padding: '20px 20px' }}>
 					<IonButton expand="block" type="submit" class="w-100 fixed-button">
 						Upload Cover Picture
-						<input type="file" name="cover_image" onChange={onChangeFieldFile} />
+						<input type="file" name="cover_image" onChange={onChangeImageHandler} />
 					</IonButton>
-				</UserModal>
-			</>
+				</div>
+			</IonModal>
 		</PageLayout>
 	);
 };
