@@ -4,7 +4,6 @@ import { IonApp, setupIonicReact } from '@ionic/react';
 import Routes from '../routes';
 import { RenderToast } from '../components/Toast';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearNotificationAction } from '../redux/actions';
 // import { Storage, Drivers } from "@ionic/storage";
 
 import '@ionic/react/css/core.css';
@@ -16,24 +15,16 @@ import '@fancyapps/ui/dist/fancybox.css';
 setupIonicReact();
 
 const Pages = () => {
-	const reduxDispatch = useDispatch();
 	const { storeNotifications, storeAuth } = useSelector((state) => {
+		console.log(state);
 		return state;
 	});
 
-	useEffect(() => {}, [storeAuth.isLoggedin]);
+	useEffect(() => {}, []);
 
 	return (
 		<>
-			{storeNotifications && (
-				<RenderToast
-					message={storeNotifications.message}
-					type={storeNotifications.type}
-					onDismiss={() => {
-						reduxDispatch(clearNotificationAction());
-					}}
-				/>
-			)}
+			{storeNotifications && <RenderToast message={storeNotifications.message} type={storeNotifications.type} />}
 			<IonApp>
 				<Routes />
 			</IonApp>

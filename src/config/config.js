@@ -76,7 +76,7 @@ export const config = {
 		slideBy: 1,
 		dots: true,
 	},
-	timeOutDelay: 500,
+	timeOutDelay: 2000,
 	showNotification: 'SHOW_NOTIFICATION',
 	clearNotification: 'CLEAR_NOTIFICATION',
 };
