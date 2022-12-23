@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { config } from '../../config/config';
-import { setToast } from '../../components/Toast';
 import { useDispatch } from 'react-redux';
 import api from '../../config/axios';
 
+import { showNotificationAction } from '../../redux/actions';
 import PageLayout from '../../components/PageLayout';
 import VideosList from './VideosList';
 
@@ -50,14 +50,16 @@ const Videos = () => {
 					},
 				})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setVideosItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};
@@ -74,14 +76,16 @@ const Videos = () => {
 					},
 				})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setVideoCategories((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { IonButton, IonModal, IonIcon } from '@ionic/react';
 import { camera } from 'ionicons/icons';
 import { config } from '../../config/config';
@@ -24,13 +24,12 @@ const ProfileCover = ({ src, alt, allowEdit, onChange }) => {
 			setEventData(null);
 		}
 		i++;
-		// setOpenModal(false);
+		setOpenModal(false);
 	};
 
 	return (
 		<>
 			<div className="article-image-full">
-				{console.log('Cover Rendering')}
 				<img src={coverImageSrc} alt={alt} className="articleImage" style={{ height: '250px', width: '100%', objectFit: 'cover' }} />
 				{allowEdit && (
 					<button

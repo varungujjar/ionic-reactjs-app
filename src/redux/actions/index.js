@@ -1,24 +1,28 @@
 import { config } from '../../config/config';
-import { setToast } from '../../components/Toast';
 import api from '../../config/axios';
 
 export const showNotificationAction = (messageObject) => {
+	console.log(messageObject);
 	return {
 		type: config.showNotification,
 		payload: messageObject,
 	};
 };
 
-export const clearNotificationAction = (messageObject) => {
+export const clearNotificationAction = () => {
 	return {
 		type: config.clearNotification,
-		payload: messageObject,
+		payload: { message: '', type: '' },
 	};
 };
 
 export const logoutAction = () => {
 	return (dispatch) => {
-		setToast(dispatch, { message: 'Logged out successfully.', type: 'success' });
+		dispatch({
+			type: config.showNotification,
+			payload: { message: 'Logged out successfully.', type: 'success' },
+		});
+
 		dispatch({
 			type: 'AUTH_LOGOUT',
 		});
@@ -28,9 +32,11 @@ export const logoutAction = () => {
 export const loginAction = (sessionObject = {}) => {
 	return (dispatch) => {
 		if (sessionObject.name) {
-			setToast(dispatch, { message: `Welcome back ${sessionObject.name}`, type: 'success' });
+			dispatch({
+				type: config.showNotification,
+				payload: { message: `Welcome back ${sessionObject.name}`, type: 'success' },
+			});
 		}
-
 		dispatch({
 			type: 'AUTH_LOGIN',
 			payload: sessionObject,

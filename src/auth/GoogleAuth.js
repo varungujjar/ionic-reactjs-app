@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { useIonLoading, IonButton, IonIcon } from '@ionic/react';
-import { logoGoogle } from 'ionicons/icons';
-import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAction } from '../redux/actions';
-import { setToast } from '../components/Toast';
+
+import { logoGoogle } from 'ionicons/icons';
+import { IonButton, IonIcon } from '@ionic/react';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+
+import { loginAction, showNotificationAction } from '../redux/actions';
 import api from '../config/axios';
 
 const GoogleOAuth = () => {
@@ -14,14 +15,15 @@ const GoogleOAuth = () => {
 	const { storeAuth } = useSelector((state) => {
 		return state;
 	});
-	const [showLoader, hideLoader] = useIonLoading();
+
+	// const [showLoader, hideLoader] = useIonLoading();
 	GoogleAuth.initialize();
 
 	useEffect(() => {
 		if (storeAuth.isLoggedin) {
 			history.push('/page/profile');
 		}
-	}, [storeAuth.isLoggedin]);
+	}, [storeAuth.isLoggedin, history]);
 
 	const doLogin = () => {
 		const submitData = async (socialData) =>
@@ -32,17 +34,18 @@ const GoogleOAuth = () => {
 					},
 				})
 				.then((response) => {
-					setToast(reduxDispatch, response.data);
+					reduxDispatch(showNotificationAction(response.data));
 					if (response.data.data && response.data.data.session) {
 						reduxDispatch(loginAction(response.data.data));
 					}
 				})
 				.catch((error) => {
-					console.log(error);
-					setToast(reduxDispatch, {
-						message: error.toJSON().message,
-						type: 'danger',
-					});
+					reduxDispatch(
+						showNotificationAction({
+							message: error.toJSON().message,
+							type: 'danger',
+						})
+					);
 				});
 
 		const initAuth = async () => {

@@ -6,7 +6,7 @@ import { ArticlePagePlaceHolder, ArticlePage } from './ArticlePage';
 import { config } from '../../config/config';
 import api from '../../config/axios';
 
-import { setToast } from '../../components/Toast';
+import { showNotificationAction } from '../../redux/actions';
 import { useDispatch } from 'react-redux';
 
 import './Article.css';
@@ -27,7 +27,7 @@ const Article = (props) => {
 					},
 				})
 				.then((response) => {
-					setToast(reduxDispatch, response.data);
+					reduxDispatch(showNotificationAction(response.data));
 					setArticlesItems((prev) => ({
 						...prev,
 						data: response.data.data,
@@ -36,10 +36,12 @@ const Article = (props) => {
 					}));
 				})
 				.catch((error) => {
-					setToast(reduxDispatch, {
-						message: error.toJSON().message,
-						type: 'danger',
-					});
+					reduxDispatch(
+						showNotificationAction({
+							message: error.toJSON().message,
+							type: 'danger',
+						})
+					);
 				});
 		};
 		GetArticlesItems();

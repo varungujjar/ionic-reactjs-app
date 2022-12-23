@@ -4,7 +4,7 @@ import PageLayout from '../../components/PageLayout';
 import { StaticPagePlaceHolder, StaticPage } from './StaticPage';
 import api from '../../config/axios';
 import { config } from '../../config/config';
-import { setToast } from '../../components/Toast';
+import { showNotificationAction } from '../../redux/actions';
 import { useDispatch } from 'react-redux';
 
 const Static = ({ id }) => {
@@ -23,14 +23,16 @@ const Static = ({ id }) => {
 						},
 					})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setArticlesItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};

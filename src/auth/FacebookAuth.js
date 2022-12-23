@@ -1,16 +1,17 @@
 import { useEffect } from 'react';
-import { useIonLoading, IonButton, IonIcon } from '@ionic/react';
-import { logoFacebook } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
-import { FacebookLogin } from '@capacitor-community/facebook-login';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginAction } from '../redux/actions';
-import { setToast } from '../components/Toast';
+
+import { logoFacebook } from 'ionicons/icons';
+import { IonButton, IonIcon } from '@ionic/react';
+import { FacebookLogin } from '@capacitor-community/facebook-login';
+
+import { loginAction, showNotificationAction } from '../redux/actions';
 import api from '../config/axios';
 
 const FacebookAuth = () => {
 	let history = useHistory();
-	const [showLoader, hideLoader] = useIonLoading();
+	// const [showLoader, hideLoader] = useIonLoading();
 	const reduxDispatch = useDispatch();
 	const { storeAuth } = useSelector((state) => {
 		return state;
@@ -20,7 +21,7 @@ const FacebookAuth = () => {
 		if (storeAuth.isLoggedin) {
 			history.push('/page/profile');
 		}
-	}, [storeAuth.isLoggedin]);
+	}, [storeAuth.isLoggedin, history]);
 
 	const doLogin = () => {
 		const submitData = async (socialData) =>
@@ -31,17 +32,18 @@ const FacebookAuth = () => {
 					},
 				})
 				.then((response) => {
-					setToast(reduxDispatch, response.data);
+					reduxDispatch(showNotificationAction(response.data));
 					if (response.data.data && response.data.data.session) {
 						reduxDispatch(loginAction(response.data.data));
 					}
 				})
 				.catch((error) => {
-					console.log(error);
-					setToast(reduxDispatch, {
-						message: error.toJSON().message,
-						type: 'danger',
-					});
+					reduxDispatch(
+						showNotificationAction({
+							message: error.toJSON().message,
+							type: 'danger',
+						})
+					);
 				});
 
 		const initAuth = async () => {

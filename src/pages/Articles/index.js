@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { config } from '../../config/config';
 import { useDispatch } from 'react-redux';
-import { setToast } from '../../components/Toast';
 import api from '../../config/axios';
+
+import { showNotificationAction } from '../../redux/actions';
 
 import PageLayout from '../../components/PageLayout';
 import ArticlesList from './ArticlesList';
@@ -30,14 +31,16 @@ const Articles = ({ catRef }) => {
 						},
 					})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setArticlesItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};

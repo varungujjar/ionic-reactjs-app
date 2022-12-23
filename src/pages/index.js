@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { IonApp, setupIonicReact } from '@ionic/react';
 
 import Routes from '../routes';
-import { RenderToast } from '../components/Toast';
-import { useSelector, useDispatch } from 'react-redux';
+import { useToast } from '../hooks/useToast';
+import { useSelector } from 'react-redux';
 // import { Storage, Drivers } from "@ionic/storage";
 
 import '@ionic/react/css/core.css';
@@ -15,20 +15,19 @@ import '@fancyapps/ui/dist/fancybox.css';
 setupIonicReact();
 
 const Pages = () => {
-	const { storeNotifications, storeAuth } = useSelector((state) => {
-		console.log(state);
+	const [setToast] = useToast();
+	const { storeNotifications } = useSelector((state) => {
 		return state;
 	});
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		setToast(storeNotifications);
+	}, [storeNotifications]);
 
 	return (
-		<>
-			{storeNotifications && <RenderToast message={storeNotifications.message} type={storeNotifications.type} />}
-			<IonApp>
-				<Routes />
-			</IonApp>
-		</>
+		<IonApp>
+			<Routes />
+		</IonApp>
 	);
 };
 

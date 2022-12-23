@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { IonButton, IonInput, IonItem } from '@ionic/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
-import { setToast } from '../components/Toast';
-import { loginAction } from '../redux/actions';
+import { setToast } from '../hooks/useToast';
+import { loginAction, showNotificationAction } from '../redux/actions';
 import { useForm, Controller } from 'react-hook-form';
 import { config } from '../config/config';
 
@@ -27,17 +27,18 @@ const WebAuth = () => {
 				},
 			})
 			.then((response) => {
-				setToast(reduxDispatch, response.data);
+				reduxDispatch(showNotificationAction(response.data));
 				if (response.data.data && response.data.data.session) {
 					reduxDispatch(loginAction(response.data.data));
 				}
 			})
 			.catch((error) => {
-				console.log(error);
-				setToast(reduxDispatch, {
-					message: error.toJSON().message,
-					type: 'danger',
-				});
+				reduxDispatch(
+					showNotificationAction({
+						message: error.toJSON().message,
+						type: 'danger',
+					})
+				);
 			});
 	};
 

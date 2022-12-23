@@ -8,7 +8,7 @@ import VideosSlider from '../Videos/VideosSlider';
 import ArticlesSlider from '../Articles/ArticlesSlider';
 import UsersSlider from '../Profile/UsersSlider';
 
-import { setToast } from '../../components/Toast';
+import { showNotificationAction } from '../../redux/actions';
 import { useDispatch } from 'react-redux';
 
 const Home = () => {
@@ -37,14 +37,16 @@ const Home = () => {
 						params: { type: config.videos.type, featured: true },
 					})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setVideosItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};
@@ -61,14 +63,16 @@ const Home = () => {
 						},
 					})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setUsersItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};
@@ -88,14 +92,16 @@ const Home = () => {
 						},
 					})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setNewsItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};
@@ -114,14 +120,16 @@ const Home = () => {
 						},
 					})
 					.then((response) => {
-						setToast(reduxDispatch, response.data);
+						reduxDispatch(showNotificationAction(response.data));
 						setArticlesItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
-						setToast(reduxDispatch, {
-							message: error.toJSON().message,
-							type: 'danger',
-						});
+						reduxDispatch(
+							showNotificationAction({
+								message: error.toJSON().message,
+								type: 'danger',
+							})
+						);
 					});
 			}, config.timeOutDelay);
 		};
