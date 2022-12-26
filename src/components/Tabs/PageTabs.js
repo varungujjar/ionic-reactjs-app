@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IonIcon, IonLabel, IonTabs, IonTabBar, IonTabButton } from '@ionic/react';
-import { bookmarkOutline, homeOutline, personOutline } from 'ionicons/icons';
-import { config } from '../config/config';
+import { TABS } from '../../config/config';
 
 const PageTabs = ({ children }) => {
 	const history = useHistory();
@@ -21,31 +20,11 @@ const PageTabs = ({ children }) => {
 		setTab(event.detail['tab']);
 	};
 
-	const TabsList = [
-		{
-			name: 'Home',
-			path: config.home.path,
-			icon: homeOutline,
-		},
-
-		{
-			name: 'Bookmarks',
-			path: config.bookmarks.path,
-			icon: bookmarkOutline,
-		},
-
-		{
-			name: 'Profile',
-			path: config.profile.path,
-			icon: personOutline,
-		},
-	];
-
 	return (
 		<IonTabs>
 			{children}
 			<IonTabBar slot="bottom" onIonTabsDidChange={handleClick} select="bookmarks">
-				{TabsList.map((tab) => {
+				{TABS.map((tab) => {
 					return (
 						<IonTabButton tab={tab.path} selected={selectTab === tab.path ? true : false} key={tab.name}>
 							<IonIcon icon={tab.icon} />

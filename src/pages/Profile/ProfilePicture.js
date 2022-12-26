@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { IonButton, IonModal, IonIcon } from '@ionic/react';
 import { camera } from 'ionicons/icons';
-import { config } from '../../config/config';
+import { API } from '../../config/config';
 
 const ProfilePicture = ({ src, alt, username, name, allowEdit, onChange }) => {
 	const inputField = useRef();
@@ -9,7 +9,7 @@ const ProfilePicture = ({ src, alt, username, name, allowEdit, onChange }) => {
 	const [eventData, setEventData] = useState(null);
 
 	const profileImageDecode = JSON.parse(src.rawvalue);
-	const profileImageSrc = profileImageDecode.imagefile && config.baseUrl + profileImageDecode.imagefile;
+	const profileImageSrc = profileImageDecode.imagefile && API.baseUrl + profileImageDecode.imagefile;
 
 	const onChangeHandler = (event) => {
 		setEventData(event);

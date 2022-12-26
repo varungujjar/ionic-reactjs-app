@@ -1,21 +1,4 @@
-export const StaticPage = ({ data }) => {
-	const { title, introtext } = data.data;
-
-	return (
-		<>
-			<h2 className="mt-3">{title}</h2>
-
-			<div
-				className="content-wrapper"
-				dangerouslySetInnerHTML={{
-					__html: introtext ? introtext : null,
-				}}
-			/>
-		</>
-	);
-};
-
-export const StaticPagePlaceHolder = () => {
+const StaticPlaceholder = () => {
 	return (
 		<>
 			<div className="article-image-full"></div>
@@ -37,3 +20,5 @@ export const StaticPagePlaceHolder = () => {
 		</>
 	);
 };
+
+export default StaticPlaceholder;

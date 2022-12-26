@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { config } from './config';
+import { API } from './config';
 // const axios = require('axios').default;
 
-let api = axios.create({
-	baseURL: config.baseUrl,
+let serviceApi = axios.create({
+	baseURL: API.baseUrl,
 	params: {
 		option: 'com_ajax',
 		group: 'system',
@@ -22,4 +22,4 @@ let api = axios.create({
 // 	}
 // );
 
-export default api;
+export default serviceApi;

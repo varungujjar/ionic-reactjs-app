@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { config } from '../config/config';
+import { API } from '../config/config';
 
 import { useToast } from '../hooks/useToast';
-import api from '../config/axios';
+import serviceApi from '../config/axios';
 
 export const useProfile = (id = null) => {
 	const [setToast] = useToast();
@@ -15,10 +15,10 @@ export const useProfile = (id = null) => {
 
 	useEffect(() => {
 		const fetchProfile = async () => {
-			await api
+			await serviceApi
 				.get(null, {
 					params: {
-						type: config.users.type,
+						type: API.profiles.type,
 						id: id,
 					},
 				})
@@ -41,11 +41,11 @@ export const useProfile = (id = null) => {
 		if (id) {
 			setTimeout(() => {
 				fetchProfile();
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		} else {
 			setTimeout(() => {
 				setProfileData((prev) => ({ ...prev, ...storeAuth.userSession, loading: false }));
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		}
 
 		return () => {

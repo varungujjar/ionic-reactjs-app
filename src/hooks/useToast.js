@@ -15,7 +15,7 @@ export const useToast = () => {
 
 	//Decode message cominng from API
 	const setToast = (messageObject) => {
-		console.log(messageObject);
+		// console.log(messageObject);
 		if (messageObject) {
 			if (messageObject.message) {
 				dispatchToastMessages(messageObject.message, messageObject.type ? messageObject.type : 'warning');

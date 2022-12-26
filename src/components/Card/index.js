@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import './Card.css';
+import './index.css';
 
 const Card = ({ onClickData, onClick, children }) => {
 	return (

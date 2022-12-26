@@ -1,5 +1,5 @@
 import Card from '../../components/Card';
-import { config } from '../../config/config';
+import { API } from '../../config/config';
 import { useHistory } from 'react-router-dom';
 
 import './UserCard.css';
@@ -8,7 +8,7 @@ export const UserCardCarousel = ({ userFullName, userId, userName, userProfileIm
 	let history = useHistory();
 
 	const image_src = userProfileImage.rawvalue
-		? config.baseUrl + JSON.parse(userProfileImage.rawvalue)['imagefile']
+		? API.baseUrl + JSON.parse(userProfileImage.rawvalue)['imagefile']
 		: './assets/images/article-no-image.png';
 
 	const onClickHandler = (id) => {

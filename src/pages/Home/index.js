@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react';
-import { config } from '../../config/config';
-import api from '../../config/axios';
-
-import PageLayout from '../../components/PageLayout';
-import PageSection from '../../components/PageSection';
-import VideosSlider from '../Videos/VideosSlider';
-import ArticlesSlider from '../Articles/ArticlesSlider';
-import UsersSlider from '../Profile/UsersSlider';
-
 import { showNotificationAction } from '../../redux/actions';
 import { useDispatch } from 'react-redux';
+import serviceApi from '../../config/axios';
+import { API } from '../../config/config';
+
+import PageLayout from '../../components/Layout/PageLayout';
+import PageSection from '../../components/Layout/PageSection';
+import VideoCarousel from '../../components/Videos/VideoCarousel';
+import ArticleCarousel from '../../components/Articles/ArticleCarousel';
+import UsersSlider from '../Profile/UsersSlider';
 
 const Home = () => {
 	const [videosItems, setVideosItems] = useState({ data: {}, loading: true });
@@ -21,20 +20,21 @@ const Home = () => {
 	const reduxDispatch = useDispatch();
 
 	const doRefresh = (event) => {
+		setRefreshToggle(!refreshToggle);
 		setVideosItems((prev) => ({ ...prev, loading: true }));
 		setArticlesItems((prev) => ({ ...prev, loading: true }));
 		setNewsItems((prev) => ({ ...prev, loading: true }));
 		setUsersItems((prev) => ({ ...prev, loading: true }));
-		setRefreshToggle(!refreshToggle);
+
 		event.detail.complete();
 	};
 
 	useEffect(() => {
 		const GetVideoItems = () => {
 			setTimeout(async () => {
-				await api
+				await serviceApi
 					.get(null, {
-						params: { type: config.videos.type, featured: true },
+						params: { type: API.videos.type, featured: true },
 					})
 					.then((response) => {
 						reduxDispatch(showNotificationAction(response.data));
@@ -48,7 +48,7 @@ const Home = () => {
 							})
 						);
 					});
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		};
 		GetVideoItems();
 	}, [reduxDispatch, refreshToggle]);
@@ -56,10 +56,10 @@ const Home = () => {
 	useEffect(() => {
 		const GetUsersItems = async () => {
 			setTimeout(async () => {
-				await api
+				await serviceApi
 					.get(null, {
 						params: {
-							type: config.users.type,
+							type: API.profiles.type,
 						},
 					})
 					.then((response) => {
@@ -74,7 +74,7 @@ const Home = () => {
 							})
 						);
 					});
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		};
 
 		GetUsersItems();
@@ -83,12 +83,12 @@ const Home = () => {
 	useEffect(() => {
 		const GetNewsItems = () => {
 			setTimeout(async () => {
-				await api
+				await serviceApi
 					.get(null, {
 						params: {
-							type: config.news.type,
+							type: API.news.type,
 							featured: true,
-							catid: config.news.catid,
+							catid: API.news.id,
 						},
 					})
 					.then((response) => {
@@ -103,7 +103,7 @@ const Home = () => {
 							})
 						);
 					});
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		};
 		GetNewsItems();
 	}, [reduxDispatch, refreshToggle]);
@@ -111,12 +111,12 @@ const Home = () => {
 	useEffect(() => {
 		const GetArticlesItems = () => {
 			setTimeout(async () => {
-				await api
+				await serviceApi
 					.get(null, {
 						params: {
-							type: config.articles.type,
+							type: API.articles.type,
 							featured: true,
-							catid: config.articles.catid,
+							catid: API.articles.id,
 						},
 					})
 					.then((response) => {
@@ -131,24 +131,21 @@ const Home = () => {
 							})
 						);
 					});
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		};
 		GetArticlesItems();
 	}, [reduxDispatch, refreshToggle]);
 
 	return (
-		<PageLayout title={config.home.name} onPageRefresh={doRefresh} showPageRefresh={true}>
-			<PageSection title={config.videos.name} link={config.videos.path} />
-			<VideosSlider data={videosItems} />
-
-			<PageSection title={config.users.name} />
+		<PageLayout title={API.home.title} onPageRefresh={doRefresh} showPageRefresh={true}>
+			<PageSection title={API.videos.title} link={API.videos.url} />
+			<VideoCarousel data={videosItems} />
+			<PageSection title={API.profiles.title} />
 			<UsersSlider data={usersItems} />
-
-			<PageSection title={config.articles.name} link={config.articles.path} />
-			<ArticlesSlider data={articlesItems} />
-
-			<PageSection title={config.news.name} link={config.news.path} />
-			<ArticlesSlider data={newsItems} />
+			<PageSection title={API.articles.title} link={API.articles.url} />
+			<ArticleCarousel data={articlesItems} />
+			<PageSection title={API.news.title} link={API.news.url} />
+			<ArticleCarousel data={newsItems} />
 		</PageLayout>
 	);
 };

@@ -1,10 +1,10 @@
-import { config } from '../../config/config';
+import { REDUX_ACTIONS } from '../../config/config';
 
 const notificationReducer = (state = null, action) => {
 	switch (action.type) {
-		case config.showNotification:
+		case REDUX_ACTIONS.showNotification:
 			return { ...action.payload };
-		case config.clearNotification:
+		case REDUX_ACTIONS.clearNotification:
 			console.log(action.payload);
 			return { ...action.payload };
 		default:

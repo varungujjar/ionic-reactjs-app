@@ -2,18 +2,19 @@ import { IonReactRouter } from '@ionic/react-router';
 import { IonRouterOutlet, IonSplitPane } from '@ionic/react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { API } from '../config/config';
 
-import PageMenu from '../components/PageMenu';
-import PageTabs from '../components/PageTabs';
+import PageMenu from '../components/Menu/PageMenu';
+import PageTabs from '../components/Tabs/PageTabs';
 
 import Home from '../pages/Home';
 import Static from '../pages/Static';
-import Article from '../pages/Articles/Article';
+import Article from '../pages/Article';
 import Articles from '../pages/Articles';
 import Videos from '../pages/Videos';
 import Contact from '../pages/Contact';
-import Login from '../auth/Login';
-import Register from '../auth/Register';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
 import Profile from '../pages/Profile';
 import Bookmarks from '../pages/Bookmarks';
 
@@ -31,53 +32,56 @@ const Routes = () => {
 						{/* Using of <Switch> to fix proper unmount when transitioning between pages.Known Bug since Ionic V5 */}
 						<Switch>
 							<Route path="/" exact>
-								<Redirect to="/page/home" />
+								<Redirect to={API.home.url} />
 							</Route>
-							<Route path="/page/home" exact>
+							<Route path={API.home.url} exact>
 								<Home />
 							</Route>
-							<Route path="/page/aboutus" exact>
-								<Static id="1" />
+							<Route path={API.aboutus.url} exact>
+								<Static id={API.aboutus.id} />
 							</Route>
-							<Route path="/page/leadership" exact>
-								<Static id="49" />
+
+							<Route path={API.community.url} exact>
+								<Static id={API.community.id} />
 							</Route>
-							<Route path="/page/community" exact>
-								<Static id="3" />
+							<Route path={API.privacy.url} exact>
+								<Static id={API.privacy.id} />
 							</Route>
-							<Route path="/page/privacy" exact>
-								<Static id="19" />
+							<Route path={API.terms.url} exact>
+								<Static id={API.terms.id} />
 							</Route>
-							<Route path="/page/terms" exact>
-								<Static id="20" />
+							<Route path={API.contact.url} exact component={Contact} />
+
+							<Route path={API.news.url} exact>
+								<Articles id={API.news.id} title={API.news.title} />
 							</Route>
-							<Route path="/page/contact" exact component={Contact} />
-							<Route path="/page/news" exact>
-								<Articles catRef="news" />
+
+							<Route path={`${API.news.url}/:id`} exact component={Article} />
+
+							<Route path={API.articles.url} exact>
+								<Articles id={API.articles.id} title={API.articles.title} />
 							</Route>
-							<Route path="/page/news/:id" exact component={Article} />
-							<Route path="/page/articles" exact>
-								<Articles catRef="articles" />
-							</Route>
-							<Route path="/page/articles/:id" exact component={Article} />
-							<Route path="/page/videos" exact component={Videos} />
-							{/* <Route path="/page/gamer/:id" exact component={Gamer} /> */}
-							<Route path="/page/register" exact component={Register} />
-							<Route path="/page/login" exact component={Login} />
+
+							<Route path={`${API.articles.url}/:id`} exact component={Article} />
+
+							<Route path={API.videos.url} exact component={Videos} />
+
+							<Route path={API.register.url} exact component={Register} />
+							<Route path={API.login.url} exact component={Login} />
 							<Route
 								exact
-								path="/page/bookmarks"
+								path={API.bookmarks.url}
 								render={() => {
-									return storeAuth.isLoggedin ? <Bookmarks /> : <Redirect exact to="/page/login" />;
+									return storeAuth.isLoggedin ? <Bookmarks /> : <Redirect exact to={API.login.url} />;
 								}}
 							/>
-							<Route path="/page/profile/:id" exact component={Profile} />
+							<Route path={`${API.home.url}/:id`} exact component={Profile} />
 
 							<Route
 								exact
-								path="/page/profile"
+								path={API.profile.url}
 								render={() => {
-									return storeAuth.isLoggedin ? <Profile /> : <Redirect exact to="/page/login" />;
+									return storeAuth.isLoggedin ? <Profile /> : <Redirect exact to={API.login.url} />;
 								}}
 							/>
 						</Switch>

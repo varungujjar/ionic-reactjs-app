@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { config } from '../../config/config';
+import { API } from '../../config/config';
 import { useParams } from 'react-router-dom';
-import api from '../../config/axios';
+import serviceApi from '../../config/axios';
 
-import PageLayout from '../../components/PageLayout';
+import PageLayout from '../../components/Layout/PageLayout';
 import ProfileSkeleton from './ProfileSkeleton';
 import ProfileCover from './ProfileCover';
 import ProfilePicture from './ProfilePicture';
@@ -39,10 +39,10 @@ const Profile = () => {
 			formData.append(key, formDataObject[key]);
 		}
 
-		await api
+		await serviceApi
 			.post(null, formData, {
 				params: {
-					type: config.profile.type,
+					type: API.profile.type,
 					uid: id,
 					session: session,
 				},

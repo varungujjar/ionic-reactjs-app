@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { IonButton, IonModal, IonIcon } from '@ionic/react';
 import { camera } from 'ionicons/icons';
-import { config } from '../../config/config';
+import { API } from '../../config/config';
 
 const ProfileCover = ({ src, alt, allowEdit, onChange }) => {
 	const inputField = useRef();
@@ -10,7 +10,7 @@ const ProfileCover = ({ src, alt, allowEdit, onChange }) => {
 	let i = 0;
 
 	const coverImageDecode = JSON.parse(src.rawvalue);
-	const coverImageSrc = coverImageDecode.imagefile && config.baseUrl + coverImageDecode.imagefile;
+	const coverImageSrc = coverImageDecode.imagefile && API.baseUrl + coverImageDecode.imagefile;
 
 	const onChangeHandler = (event) => {
 		setEventData(event);

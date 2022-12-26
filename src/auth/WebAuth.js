@@ -5,9 +5,9 @@ import { useHistory, Link } from 'react-router-dom';
 import { setToast } from '../hooks/useToast';
 import { loginAction, showNotificationAction } from '../redux/actions';
 import { useForm, Controller } from 'react-hook-form';
-import { config } from '../config/config';
+import { API } from '../config/config';
 
-import api from '../config/axios';
+import serviceApi from '../config/axios';
 
 const WebAuth = () => {
 	let history = useHistory();
@@ -18,10 +18,10 @@ const WebAuth = () => {
 
 	const onSubmit = async (data) => {
 		// showLoader(LoaderOptions);
-		await api
+		await serviceApi
 			.get(null, {
 				params: {
-					type: config.login.type,
+					type: API.login.type,
 					username: data.username,
 					password: data.password,
 				},

@@ -1,4 +1,4 @@
-import PageSubTabs from './PageSubTabs';
+import PageSubTabs from '../SegmentTabs/PageSubTabs';
 
 import { IonButtons, IonRefresherContent, IonRefresher, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 

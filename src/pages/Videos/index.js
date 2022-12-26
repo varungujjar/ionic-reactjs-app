@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { config } from '../../config/config';
+import { API } from '../../config/config';
 import { useDispatch } from 'react-redux';
-import api from '../../config/axios';
+import serviceApi from '../../config/axios';
 
 import { showNotificationAction } from '../../redux/actions';
-import PageLayout from '../../components/PageLayout';
-import VideosList from './VideosList';
+import PageLayout from '../../components/Layout/PageLayout';
+import VideoCardPlaceholder from '../../components/Videos/VideoCardPlaceholder';
+import VideoCard from '../../components/Videos/VideoCard';
 
 const memo = (callback) => {
 	const cache = new Map();
@@ -18,12 +19,11 @@ const memo = (callback) => {
 	};
 };
 
-const memoizedAxiosGet = memo(api.get);
+const memoizedAxiosGet = memo(serviceApi.get);
 
 const Videos = () => {
 	const [videosItems, setVideosItems] = useState({ data: {}, loading: true });
 	const [videoCategories, setVideoCategories] = useState({ activeId: 0, data: {}, loading: true });
-	const [refreshToggle, setRefreshToggle] = useState(false);
 
 	const reduxDispatch = useDispatch();
 
@@ -35,7 +35,6 @@ const Videos = () => {
 	const doRefresh = (event) => {
 		setVideosItems((prev) => ({ ...prev, loading: true }));
 		setVideoCategories((prev) => ({ ...prev, loading: true }));
-		setRefreshToggle(!refreshToggle);
 		event.detail.complete();
 	};
 
@@ -44,7 +43,7 @@ const Videos = () => {
 			setTimeout(async () => {
 				await memoizedAxiosGet(null, {
 					params: {
-						type: config.videos.type,
+						type: API.videos.type,
 						featured: categoryId === 0 ? true : false,
 						catid: categoryId ? categoryId : videoCategories.activeId,
 					},
@@ -61,11 +60,11 @@ const Videos = () => {
 							})
 						);
 					});
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		};
 
 		GetVideoItems(videoCategories.activeId);
-	}, [refreshToggle, reduxDispatch, videoCategories.activeId]);
+	}, [videosItems.loading, reduxDispatch, videoCategories.activeId]);
 
 	useEffect(() => {
 		const GetVideoCategories = () => {
@@ -87,15 +86,15 @@ const Videos = () => {
 							})
 						);
 					});
-			}, config.timeOutDelay);
+			}, API.timeOutDelay);
 		};
 		GetVideoCategories();
-	}, [refreshToggle, reduxDispatch]);
+	}, [videoCategories.loading, reduxDispatch]);
 
 	return (
 		<>
 			<PageLayout
-				title={config.videos.name}
+				title={API.videos.title}
 				tabShow={true}
 				tabItems={videoCategories.data}
 				tabDefaultTitle={'Featured'}
@@ -106,7 +105,18 @@ const Videos = () => {
 				showPageRefresh={true}
 				onPageRefresh={doRefresh}
 			>
-				<VideosList items={videosItems.data} isLoading={videosItems.loading} />
+				{!videosItems.loading ? (
+					Object.keys(videosItems.data).length > 0 ? (
+						videosItems.data.map((video) => <VideoCard key={video.id} data={video} />)
+					) : (
+						<>No videos to display</>
+					)
+				) : (
+					<>
+						<VideoCardPlaceholder />
+						<VideoCardPlaceholder />
+					</>
+				)}
 			</PageLayout>
 		</>
 	);

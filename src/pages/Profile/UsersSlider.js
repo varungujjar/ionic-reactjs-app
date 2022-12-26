@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { config } from '../../config/config';
+import { CAROUSEL_OPTIONS } from '../../config/config';
 
 import Carousel from '../../components/Carousel';
 import { UserCardCarousel, UsersCardPlaceholder } from './UserCard';
@@ -8,7 +8,7 @@ const UsersSlider = ({ data }) => {
 	useEffect(() => {}, [data.loading]);
 
 	return !data.loading ? (
-		<Carousel key={0} className="owl-theme" config={config.videocarousel}>
+		<Carousel key={0} className="owl-theme" config={CAROUSEL_OPTIONS}>
 			{Object.keys(data.data).length > 0 ? (
 				data.data.map((user) => (
 					<UserCardCarousel
@@ -24,7 +24,7 @@ const UsersSlider = ({ data }) => {
 			)}
 		</Carousel>
 	) : (
-		<Carousel config={config.videocarousel} key={1}>
+		<Carousel config={CAROUSEL_OPTIONS} key={1}>
 			<UsersCardPlaceholder />
 			<UsersCardPlaceholder />
 		</Carousel>

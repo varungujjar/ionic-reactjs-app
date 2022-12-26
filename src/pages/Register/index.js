@@ -3,9 +3,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useIonToast, IonButton, IonInput, IonItem } from '@ionic/react';
 
-import { config } from '../config/config';
-import { ApiAuth } from '../helpers/Api';
-import PageLayout from '../components/PageLayout';
+import { API } from '../../config/config';
+import { ApiAuth } from '../../helpers/Api';
+import PageLayout from '../../components/Layout/PageLayout';
 
 const Register = () => {
 	let history = useHistory();
@@ -58,7 +58,7 @@ const Register = () => {
 	});
 
 	return (
-		<PageLayout title={config.register.name}>
+		<PageLayout title={API.register.title}>
 			<div className="login-container center-container">
 				<div className="logo">
 					<img src="./assets/images/about-weare.png" alt="logo" />

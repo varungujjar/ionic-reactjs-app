@@ -1,17 +1,17 @@
-import { config } from '../../config/config';
-import api from '../../config/axios';
+import { REDUX_ACTIONS } from '../../config/config';
+import serviceApi from '../../config/axios';
 
 export const showNotificationAction = (messageObject) => {
 	console.log(messageObject);
 	return {
-		type: config.showNotification,
+		type: REDUX_ACTIONS.showNotification,
 		payload: messageObject,
 	};
 };
 
 export const clearNotificationAction = () => {
 	return {
-		type: config.clearNotification,
+		type: REDUX_ACTIONS.clearNotification,
 		payload: { message: '', type: '' },
 	};
 };
@@ -19,7 +19,7 @@ export const clearNotificationAction = () => {
 export const logoutAction = () => {
 	return (dispatch) => {
 		dispatch({
-			type: config.showNotification,
+			type: REDUX_ACTIONS.showNotification,
 			payload: { message: 'Logged out successfully.', type: 'success' },
 		});
 
@@ -33,7 +33,7 @@ export const loginAction = (sessionObject = {}) => {
 	return (dispatch) => {
 		if (sessionObject.name) {
 			dispatch({
-				type: config.showNotification,
+				type: REDUX_ACTIONS.showNotification,
 				payload: { message: `Welcome back ${sessionObject.name}`, type: 'success' },
 			});
 		}
@@ -46,7 +46,7 @@ export const loginAction = (sessionObject = {}) => {
 
 export const refreshSessionAction = (sessionObject = {}) => {
 	return async (dispatch) => {
-		await api.get(null, { params: { type: 'session', session: sessionObject.session, uid: sessionObject.id } }).then((response) => {
+		await serviceApi.get(null, { params: { type: 'session', session: sessionObject.session, uid: sessionObject.id } }).then((response) => {
 			if (response.data.data && response.data.data.session) {
 				console.log(response.data.data);
 				dispatch({
