@@ -1,15 +1,11 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { IonButton, IonModal, IonIcon } from '@ionic/react';
 import { camera } from 'ionicons/icons';
-import { API } from '../../config/config';
 
 const ProfilePicture = ({ src, alt, username, name, allowEdit, onChange }) => {
 	const inputField = useRef();
 	const [openModal, setOpenModal] = useState(false);
 	const [eventData, setEventData] = useState(null);
-
-	const profileImageDecode = JSON.parse(src.rawvalue);
-	const profileImageSrc = profileImageDecode.imagefile && API.baseUrl + profileImageDecode.imagefile;
 
 	const onChangeHandler = (event) => {
 		setEventData(event);
@@ -24,13 +20,11 @@ const ProfilePicture = ({ src, alt, username, name, allowEdit, onChange }) => {
 		setOpenModal(false);
 	};
 
-	useEffect(() => {}, [src]);
-
 	return (
 		<>
 			<div className="profile-image">
 				<div className="profile-image-wrapper">
-					<img src={profileImageSrc} alt={alt} className="articleImage" />
+					<img src={src ? src : './assets/images/article-no-image.png'} alt={alt} className="articleImage" />
 					{allowEdit && (
 						<button
 							className="btn-profile-image-edit btn btn-primary"

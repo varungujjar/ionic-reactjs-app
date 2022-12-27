@@ -1,16 +1,12 @@
 import { useState, useRef } from 'react';
 import { IonButton, IonModal, IonIcon } from '@ionic/react';
 import { camera } from 'ionicons/icons';
-import { API } from '../../config/config';
 
 const ProfileCover = ({ src, alt, allowEdit, onChange }) => {
 	const inputField = useRef();
 	const [openModal, setOpenModal] = useState(false);
 	const [eventData, setEventData] = useState(null);
 	let i = 0;
-
-	const coverImageDecode = JSON.parse(src.rawvalue);
-	const coverImageSrc = coverImageDecode.imagefile && API.baseUrl + coverImageDecode.imagefile;
 
 	const onChangeHandler = (event) => {
 		setEventData(event);
@@ -30,7 +26,12 @@ const ProfileCover = ({ src, alt, allowEdit, onChange }) => {
 	return (
 		<>
 			<div className="article-image-full">
-				<img src={coverImageSrc} alt={alt} className="articleImage" style={{ height: '250px', width: '100%', objectFit: 'cover' }} />
+				<img
+					src={src ? src : './assets/images/article-no-image.png'}
+					alt={alt}
+					className="articleImage"
+					style={{ height: '250px', width: '100%', objectFit: 'cover' }}
+				/>
 				{allowEdit && (
 					<button
 						className="btn btn-primary btn-image-edit"
@@ -53,6 +54,12 @@ const ProfileCover = ({ src, alt, allowEdit, onChange }) => {
 			</IonModal>
 		</>
 	);
+};
+
+ProfileCover.defaultProps = {
+	src: './assets/images/article-no-image.png',
+	alt: '',
+	allowEdit: false,
 };
 
 export default ProfileCover;

@@ -6,6 +6,7 @@ import { store } from './redux/store';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import Pages from './pages';
+import './index.css';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);

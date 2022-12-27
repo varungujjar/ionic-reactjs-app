@@ -22,35 +22,35 @@ const memo = (callback) => {
 const memoizedAxiosGet = memo(serviceApi.get);
 
 const Videos = () => {
-	const [videosItems, setVideosItems] = useState({ data: {}, loading: true });
-	const [videoCategories, setVideoCategories] = useState({ activeId: 0, data: {}, loading: true });
+	const [items, setItems] = useState({ data: {}, loading: true });
+	const [itemCategories, setItemCategories] = useState({ activeId: 0, data: {}, loading: true });
 
 	const reduxDispatch = useDispatch();
 
 	const setCategoryId = (categoryId) => {
-		setVideosItems((prev) => ({ ...prev, loading: true }));
-		setVideoCategories((prev) => ({ ...prev, activeId: categoryId }));
+		setItems((prev) => ({ ...prev, loading: true }));
+		setItemCategories((prev) => ({ ...prev, activeId: categoryId }));
 	};
 
 	const doRefresh = (event) => {
-		setVideosItems((prev) => ({ ...prev, loading: true }));
-		setVideoCategories((prev) => ({ ...prev, loading: true }));
+		setItems((prev) => ({ ...prev, loading: true }));
+		setItemCategories((prev) => ({ ...prev, loading: true }));
 		event.detail.complete();
 	};
 
 	useEffect(() => {
-		const GetVideoItems = (categoryId) => {
+		const fetchItems = (categoryId) => {
 			setTimeout(async () => {
 				await memoizedAxiosGet(null, {
 					params: {
 						type: API.videos.type,
 						featured: categoryId === 0 ? true : false,
-						catid: categoryId ? categoryId : videoCategories.activeId,
+						catid: categoryId ? categoryId : itemCategories.activeId,
 					},
 				})
 					.then((response) => {
 						reduxDispatch(showNotificationAction(response.data));
-						setVideosItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
+						setItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
 						reduxDispatch(
@@ -63,8 +63,8 @@ const Videos = () => {
 			}, API.timeOutDelay);
 		};
 
-		GetVideoItems(videoCategories.activeId);
-	}, [videosItems.loading, reduxDispatch, videoCategories.activeId]);
+		fetchItems(itemCategories.activeId);
+	}, [items.loading, reduxDispatch, itemCategories.activeId]);
 
 	useEffect(() => {
 		const GetVideoCategories = () => {
@@ -76,7 +76,7 @@ const Videos = () => {
 				})
 					.then((response) => {
 						reduxDispatch(showNotificationAction(response.data));
-						setVideoCategories((prev) => ({ ...prev, data: response.data.data, loading: false }));
+						setItemCategories((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
 						reduxDispatch(
@@ -89,33 +89,31 @@ const Videos = () => {
 			}, API.timeOutDelay);
 		};
 		GetVideoCategories();
-	}, [videoCategories.loading, reduxDispatch]);
+	}, [itemCategories.loading, reduxDispatch]);
 
 	return (
 		<>
 			<PageLayout
 				title={API.videos.title}
 				tabShow={true}
-				tabItems={videoCategories.data}
+				tabItems={itemCategories.data}
 				tabDefaultTitle={'Featured'}
 				tabDefaultTitleValue={0}
-				tabActiveValue={videoCategories.activeId}
-				tabIsLoading={videoCategories.loading}
+				tabActiveValue={itemCategories.activeId}
+				tabIsLoading={itemCategories.loading}
 				tabOnChange={(categoryId) => setCategoryId(categoryId)}
 				showPageRefresh={true}
 				onPageRefresh={doRefresh}
 			>
-				{!videosItems.loading ? (
-					Object.keys(videosItems.data).length > 0 ? (
-						videosItems.data.map((video) => <VideoCard key={video.id} data={video} />)
-					) : (
-						<>No videos to display</>
-					)
-				) : (
+				{items.loading ? (
 					<>
 						<VideoCardPlaceholder />
 						<VideoCardPlaceholder />
 					</>
+				) : Object.keys(items.data).length > 0 ? (
+					items.data.map((video) => <VideoCard key={video.id} data={video} />)
+				) : (
+					<>No videos to display</>
 				)}
 			</PageLayout>
 		</>

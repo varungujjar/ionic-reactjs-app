@@ -9,7 +9,7 @@ import PageLayout from '../../components/Layout/PageLayout';
 import StaticPlaceholder from './StaticPlaceholder';
 
 const Static = ({ id }) => {
-	const [articlesItems, setArticlesItems] = useState({ data: {}, loading: true });
+	const [item, setItem] = useState({ data: {}, loading: true });
 	const reduxDispatch = useDispatch();
 
 	const DisplayItem = ({ data }) => {
@@ -30,7 +30,7 @@ const Static = ({ id }) => {
 	};
 
 	useEffect(() => {
-		const fetchData = () => {
+		const fetchItem = () => {
 			setTimeout(async () => {
 				await serviceApi
 					.get(null, {
@@ -41,7 +41,7 @@ const Static = ({ id }) => {
 					})
 					.then((response) => {
 						reduxDispatch(showNotificationAction(response.data));
-						setArticlesItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
+						setItem((prev) => ({ ...prev, data: response.data.data, loading: false }));
 					})
 					.catch((error) => {
 						reduxDispatch(
@@ -54,16 +54,16 @@ const Static = ({ id }) => {
 			}, API.timeOutDelay);
 		};
 
-		fetchData();
+		fetchItem();
 
 		return () => {
-			setArticlesItems((prev) => ({ ...prev, data: {}, loading: true }));
+			setItem((prev) => ({ ...prev, data: {}, loading: true }));
 		};
 	}, [id, reduxDispatch]);
 
 	return (
-		<PageLayout title={articlesItems.data.title ? articlesItems.data.title : null} icon={documentText}>
-			{Object.keys(articlesItems.data).length > 0 && !articlesItems.loading ? <DisplayItem data={articlesItems} /> : <StaticPlaceholder />}
+		<PageLayout title={item.data.title ? item.data.title : null} icon={documentText}>
+			{item.loading ? <StaticPlaceholder /> : <DisplayItem data={item} />}
 		</PageLayout>
 	);
 };

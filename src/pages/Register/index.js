@@ -1,50 +1,22 @@
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { Link } from 'react-router-dom';
-import { useIonToast, IonButton, IonInput, IonItem } from '@ionic/react';
-
+import { useDispatch } from 'react-redux';
+import { showNotificationAction } from '../../redux/actions';
+import { IonInput, IonItem } from '@ionic/react';
 import { API } from '../../config/config';
-import { ApiAuth } from '../../helpers/Api';
+import serviceApi from '../../config/axios';
+import Button from '../../components/Form/Button';
 import PageLayout from '../../components/Layout/PageLayout';
 
 const Register = () => {
 	let history = useHistory();
-	const [present] = useIonToast();
-
-	const presentToast = (message, type = null) => {
-		present({
-			message: message,
-			duration: 2000,
-			position: 'bottom',
-			color: type ? type : 'primary',
-		});
-	};
-
-	const onSubmit = (data) => {
-		ApiAuth('register', data, (resultData) => {
-			if (resultData['message']) {
-				console.log(resultData);
-				presentToast(resultData['message']);
-			}
-
-			if (resultData['messages']) {
-				for (const [key, value] of Object.entries(resultData['messages'])) {
-					value.forEach((message) => {
-						presentToast(message, key);
-					});
-				}
-			}
-
-			if (resultData['success']) {
-				history.push('/page/home');
-			}
-		});
-	};
-
+	const reduxDispatch = useDispatch();
 	const {
 		control,
-		// register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -56,6 +28,38 @@ const Register = () => {
 		mode: 'onChange',
 		reValidateMode: 'onChange',
 	});
+	// reset();
+
+	const onSubmitHandler = async (formDataObject) => {
+		let formData = new FormData();
+		for (let key in formDataObject) {
+			formData.append(key, formDataObject[key]);
+		}
+
+		await serviceApi
+			.post(null, formData, {
+				params: {
+					type: API.register.type,
+				},
+			})
+			.then((response) => {
+				reduxDispatch(showNotificationAction(response.data));
+				if (response.data.success) {
+					reset();
+					history.push(API.register.afterRegister);
+				}
+			})
+			.catch((error) => {
+				reduxDispatch(
+					showNotificationAction({
+						message: error.toJSON().message,
+						type: 'danger',
+					})
+				);
+			});
+	};
+
+	useEffect(() => {}, []);
 
 	return (
 		<PageLayout title={API.register.title}>
@@ -67,7 +71,7 @@ const Register = () => {
 				<p className="mb-2 text-muted">
 					To view or manage your profile <br></br>you will need to create an account.
 				</p>
-				<form onSubmit={handleSubmit(onSubmit)}>
+				<form onSubmit={handleSubmit(onSubmitHandler)}>
 					<IonItem>
 						<Controller
 							control={control}
@@ -116,9 +120,7 @@ const Register = () => {
 						{errors.password && <div className="input-error">Password is required</div>}
 					</IonItem>
 
-					<IonButton expand="block" type="submit" class="w-100">
-						Register
-					</IonButton>
+					<Button type="submit">Register</Button>
 					<p style={{ fontSize: 'medium' }}>
 						Already have an account?
 						<Link to="/page/login" className="text-highlight">

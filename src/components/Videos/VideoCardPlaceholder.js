@@ -3,7 +3,7 @@ import Card from '../Card';
 const VideoCardPlaceholder = () => {
 	return (
 		<Card>
-			<img src={'./assets/images/article-no-image.png'} className="card-img-top placeholder" />
+			<img src={'./assets/images/article-no-image.png'} className="card-img-top placeholder" alt="loading" />
 			<div className="card-body">
 				<h5 className="card-title placeholder-glow">
 					<span className="placeholder col-6"></span>

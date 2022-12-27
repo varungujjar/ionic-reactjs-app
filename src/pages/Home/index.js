@@ -6,9 +6,13 @@ import { API } from '../../config/config';
 
 import PageLayout from '../../components/Layout/PageLayout';
 import PageSection from '../../components/Layout/PageSection';
+
 import VideoCarousel from '../../components/Videos/VideoCarousel';
+import VideoCarouselPlaceholder from '../../components/Videos/VideoCarouselPlaceholder';
 import ArticleCarousel from '../../components/Articles/ArticleCarousel';
-import UsersSlider from '../Profile/UsersSlider';
+import ArticleCarouselPlaceholder from '../../components/Articles/ArticleCarouselPlaceholder';
+import ProfileCarousel from '../../components/Profiles/ProfileCarousel';
+import ProfileCarouselPlaceholder from '../../components/Profiles/ProfileCarouselPlaceholder';
 
 const Home = () => {
 	const [videosItems, setVideosItems] = useState({ data: {}, loading: true });
@@ -20,132 +24,122 @@ const Home = () => {
 	const reduxDispatch = useDispatch();
 
 	const doRefresh = (event) => {
+		setVideosItems((prev) => ({ ...prev, data: {}, loading: true }));
+		setArticlesItems((prev) => ({ ...prev, data: {}, loading: true }));
+		setNewsItems((prev) => ({ ...prev, data: {}, loading: true }));
+		setUsersItems((prev) => ({ ...prev, data: {}, loading: true }));
 		setRefreshToggle(!refreshToggle);
-		setVideosItems((prev) => ({ ...prev, loading: true }));
-		setArticlesItems((prev) => ({ ...prev, loading: true }));
-		setNewsItems((prev) => ({ ...prev, loading: true }));
-		setUsersItems((prev) => ({ ...prev, loading: true }));
-
 		event.detail.complete();
 	};
 
 	useEffect(() => {
-		const GetVideoItems = () => {
-			setTimeout(async () => {
-				await serviceApi
-					.get(null, {
-						params: { type: API.videos.type, featured: true },
-					})
-					.then((response) => {
-						reduxDispatch(showNotificationAction(response.data));
-						setVideosItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
-					})
-					.catch((error) => {
-						reduxDispatch(
-							showNotificationAction({
-								message: error.toJSON().message,
-								type: 'danger',
-							})
-						);
-					});
-			}, API.timeOutDelay);
-		};
-		GetVideoItems();
-	}, [reduxDispatch, refreshToggle]);
-
-	useEffect(() => {
-		const GetUsersItems = async () => {
-			setTimeout(async () => {
-				await serviceApi
-					.get(null, {
-						params: {
-							type: API.profiles.type,
-						},
-					})
-					.then((response) => {
-						reduxDispatch(showNotificationAction(response.data));
-						setUsersItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
-					})
-					.catch((error) => {
-						reduxDispatch(
-							showNotificationAction({
-								message: error.toJSON().message,
-								type: 'danger',
-							})
-						);
-					});
-			}, API.timeOutDelay);
+		const fetchItemsVideos = async () => {
+			await serviceApi
+				.get(null, {
+					params: { type: API.videos.type, featured: true },
+				})
+				.then((response) => {
+					reduxDispatch(showNotificationAction(response.data));
+					setVideosItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
+				})
+				.catch((error) => {
+					reduxDispatch(
+						showNotificationAction({
+							message: error.toJSON().message,
+							type: 'danger',
+						})
+					);
+				});
 		};
 
-		GetUsersItems();
-	}, [reduxDispatch, refreshToggle]);
-
-	useEffect(() => {
-		const GetNewsItems = () => {
-			setTimeout(async () => {
-				await serviceApi
-					.get(null, {
-						params: {
-							type: API.news.type,
-							featured: true,
-							catid: API.news.id,
-						},
-					})
-					.then((response) => {
-						reduxDispatch(showNotificationAction(response.data));
-						setNewsItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
-					})
-					.catch((error) => {
-						reduxDispatch(
-							showNotificationAction({
-								message: error.toJSON().message,
-								type: 'danger',
-							})
-						);
-					});
-			}, API.timeOutDelay);
+		const fetchItemsUsers = async () => {
+			await serviceApi
+				.get(null, {
+					params: {
+						type: API.profiles.type,
+					},
+				})
+				.then((response) => {
+					reduxDispatch(showNotificationAction(response.data));
+					setUsersItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
+				})
+				.catch((error) => {
+					reduxDispatch(
+						showNotificationAction({
+							message: error.toJSON().message,
+							type: 'danger',
+						})
+					);
+				});
 		};
-		GetNewsItems();
-	}, [reduxDispatch, refreshToggle]);
 
-	useEffect(() => {
-		const GetArticlesItems = () => {
-			setTimeout(async () => {
-				await serviceApi
-					.get(null, {
-						params: {
-							type: API.articles.type,
-							featured: true,
-							catid: API.articles.id,
-						},
-					})
-					.then((response) => {
-						reduxDispatch(showNotificationAction(response.data));
-						setArticlesItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
-					})
-					.catch((error) => {
-						reduxDispatch(
-							showNotificationAction({
-								message: error.toJSON().message,
-								type: 'danger',
-							})
-						);
-					});
-			}, API.timeOutDelay);
+		const fetchItemsNews = async () => {
+			await serviceApi
+				.get(null, {
+					params: {
+						type: API.news.type,
+						featured: true,
+						catid: API.news.id,
+					},
+				})
+				.then((response) => {
+					reduxDispatch(showNotificationAction(response.data));
+					setNewsItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
+				})
+				.catch((error) => {
+					reduxDispatch(
+						showNotificationAction({
+							message: error.toJSON().message,
+							type: 'danger',
+						})
+					);
+				});
 		};
-		GetArticlesItems();
+
+		const fetchItemsArticles = async () => {
+			await serviceApi
+				.get(null, {
+					params: {
+						type: API.articles.type,
+						featured: true,
+						catid: API.articles.id,
+					},
+				})
+				.then((response) => {
+					reduxDispatch(showNotificationAction(response.data));
+					setArticlesItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
+				})
+				.catch((error) => {
+					reduxDispatch(
+						showNotificationAction({
+							message: error.toJSON().message,
+							type: 'danger',
+						})
+					);
+				});
+		};
+
+		setTimeout(() => {
+			fetchItemsVideos();
+			fetchItemsUsers();
+			fetchItemsNews();
+			fetchItemsArticles();
+		}, API.timeOutDelay);
 	}, [reduxDispatch, refreshToggle]);
 
 	return (
 		<PageLayout title={API.home.title} onPageRefresh={doRefresh} showPageRefresh={true}>
 			<PageSection title={API.videos.title} link={API.videos.url} />
-			<VideoCarousel data={videosItems} />
+			{videosItems.loading ? <VideoCarouselPlaceholder /> : <VideoCarousel items={videosItems} />}
+
 			<PageSection title={API.profiles.title} />
-			<UsersSlider data={usersItems} />
+			{usersItems.loading ? <ProfileCarouselPlaceholder /> : <ProfileCarousel items={usersItems} />}
+
 			<PageSection title={API.articles.title} link={API.articles.url} />
-			<ArticleCarousel data={articlesItems} />
+			{articlesItems.loading ? <ArticleCarouselPlaceholder /> : <ArticleCarousel items={articlesItems} />}
+
 			<PageSection title={API.news.title} link={API.news.url} />
-			<ArticleCarousel data={newsItems} />
+			{newsItems.loading ? <ArticleCarouselPlaceholder /> : <ArticleCarousel items={newsItems} />}
 		</PageLayout>
 	);
 };

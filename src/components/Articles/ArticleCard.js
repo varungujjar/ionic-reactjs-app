@@ -7,6 +7,7 @@ import Card from '../Card';
 const ArticleCard = ({ data }) => {
 	const history = useHistory();
 	const { id, title, alias, introtext, images, created } = data;
+	// console.log(data);
 
 	const onClickHandler = (id) => {
 		history.push(`${API.articles.url}/${id}`);
@@ -41,7 +42,7 @@ const ArticleCard = ({ data }) => {
 };
 
 ArticleCard.defaultProps = {
-	article: {},
+	data: {},
 };
 
 export default ArticleCard;

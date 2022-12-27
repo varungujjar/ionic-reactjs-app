@@ -1,28 +1,15 @@
-import { useEffect } from 'react';
 import { CAROUSEL_OPTIONS } from '../../config/config';
+import OwlCarousel from 'react-owl-carousel';
 
-import Carousel from '../Carousel';
 import VideoCard from './VideoCard';
-import VideoCardPlaceholder from './VideoCardPlaceholder';
 
-const VideoCarousel = ({ data }) => {
-	useEffect(() => {}, [data.loading]);
+const VideoCarousel = ({ items }) => {
+	const { data } = items;
 
 	return (
-		<Carousel className="owl-theme" config={CAROUSEL_OPTIONS}>
-			{!data.loading ? (
-				Object.keys(data.data).length > 0 ? (
-					data.data.map((video) => <VideoCard key={video.id} data={video} />)
-				) : (
-					<>No videos to display</>
-				)
-			) : (
-				<>
-					<VideoCardPlaceholder />
-					<VideoCardPlaceholder />
-				</>
-			)}
-		</Carousel>
+		<OwlCarousel className="owl-theme" {...CAROUSEL_OPTIONS}>
+			{data.length > 0 ? data.map((video) => <VideoCard key={video.id} data={video} />) : <>No videos to display</>}
+		</OwlCarousel>
 	);
 };
 

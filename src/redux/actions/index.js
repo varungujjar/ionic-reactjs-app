@@ -2,7 +2,7 @@ import { REDUX_ACTIONS } from '../../config/config';
 import serviceApi from '../../config/axios';
 
 export const showNotificationAction = (messageObject) => {
-	console.log(messageObject);
+	// console.log(messageObject);
 	return {
 		type: REDUX_ACTIONS.showNotification,
 		payload: messageObject,
@@ -48,7 +48,7 @@ export const refreshSessionAction = (sessionObject = {}) => {
 	return async (dispatch) => {
 		await serviceApi.get(null, { params: { type: 'session', session: sessionObject.session, uid: sessionObject.id } }).then((response) => {
 			if (response.data.data && response.data.data.session) {
-				console.log(response.data.data);
+				// console.log(response.data.data);
 				dispatch({
 					type: 'AUTH_REFRESH',
 					payload: response.data.data,

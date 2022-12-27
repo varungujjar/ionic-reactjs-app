@@ -1,0 +1,10 @@
+.owl-stage {
+	left: -50px;
+	display: flex;
+	flex: 1 0 auto;
+	padding-bottom: 20px;
+}
+
+.owl-stage .card {
+	height: 100% !important;
+}

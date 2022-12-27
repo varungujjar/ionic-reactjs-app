@@ -14,7 +14,7 @@ import './index.css';
 
 const Article = (props) => {
 	const { id } = props.match.params;
-	const [articlesItems, setArticlesItems] = useState({ data: {}, loading: true, category: '' });
+	const [item, setItem] = useState({ data: {}, loading: true, category: '' });
 	const reduxDispatch = useDispatch();
 
 	const DisplayItem = ({ item }) => {
@@ -51,7 +51,7 @@ const Article = (props) => {
 				})
 				.then((response) => {
 					reduxDispatch(showNotificationAction(response.data));
-					setArticlesItems((prev) => ({
+					setItem((prev) => ({
 						...prev,
 						data: response.data.data,
 						loading: false,
@@ -71,8 +71,8 @@ const Article = (props) => {
 	}, [id, reduxDispatch]);
 
 	return (
-		<PageLayout title={articlesItems.category} icon={documentText}>
-			{!articlesItems.loading ? <DisplayItem item={articlesItems.data} /> : <ArticlePlaceholder />}
+		<PageLayout title={item.category} icon={documentText}>
+			{item.loading ? <ArticlePlaceholder /> : <DisplayItem item={item.data} />}
 		</PageLayout>
 	);
 };

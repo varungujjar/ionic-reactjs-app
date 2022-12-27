@@ -1,4 +1,4 @@
-const ProfileSkeleton = () => {
+const ProfilePlaceholder = () => {
 	return (
 		<div>
 			<div className="article-image-full">
@@ -39,4 +39,4 @@ const ProfileSkeleton = () => {
 	);
 };
 
-export default ProfileSkeleton;
+export default ProfilePlaceholder;

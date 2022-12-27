@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { IonInput, IonTextarea, IonButton, IonItem, IonModal, IonIcon } from '@ionic/react';
+import { IonInput, IonTextarea, IonItem, IonModal, IonIcon } from '@ionic/react';
 import { useForm, Controller } from 'react-hook-form';
 import { pencil } from 'ionicons/icons';
+import Button from '../../components/Form/Button';
 
 const ProfileBio = ({ biography, name, allowEdit, onChange }) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [eventData, setEventData] = useState(null);
 	let i = 0;
 
-	const onChangeHandler = (event) => {
-		setEventData((prev) => ({ ...prev, [event.target.name]: event.target.value }));
-	};
-
-	const onSubmitHandler = () => {
+	const onSubmitHandler = (formObject) => {
+		setEventData((prev) => ({ ...prev, ...formObject }));
 		setOpenModal(false);
 	};
 
@@ -29,10 +27,14 @@ const ProfileBio = ({ biography, name, allowEdit, onChange }) => {
 	const {
 		control,
 		// register,
-		// handleSubmit,
-		// reset,
-		// formState: { errors },
+		handleSubmit,
+		reset,
+		formState: { errors },
 	} = useForm({
+		defaultValues: {
+			name: name ? name : '',
+			biography: biography.rawvalue ? biography.rawvalue : '',
+		},
 		mode: 'onChange',
 		reValidateMode: 'onChange',
 	});
@@ -64,55 +66,44 @@ const ProfileBio = ({ biography, name, allowEdit, onChange }) => {
 				<div className="container" style={{ padding: '20px 20px' }}>
 					<h6 className="text-bold">Edit Profile Details</h6>
 
-					<IonItem>
-						<Controller
-							control={control}
-							name="name"
-							rules={{ required: false }}
-							defaultValue={name}
-							render={({ field: { value, onBlur, onChange } }) => (
-								<IonInput
-									type="text"
-									value={value}
-									onIonBlur={onBlur}
-									onInput={(e) => {
-										onChange(e);
-										onChangeHandler(e);
-									}}
-									onIonChange={onChange}
-									placeholder="Full Name"
-									name="name"
-								/>
-							)}
-						/>
-					</IonItem>
-					<IonItem>
-						<Controller
-							control={control}
-							name="biography"
-							rules={{ required: false }}
-							defaultValue={biography.rawvalue}
-							render={({ field: { value, onBlur, onChange } }) => (
-								<IonTextarea
-									value={value}
-									onIonBlur={onBlur}
-									onInput={(e) => {
-										onChange(e);
-										onChangeHandler(e);
-									}}
-									onIonChange={onChange}
-									placeholder="Biography"
-									name="biography"
-								/>
-							)}
-						/>
-					</IonItem>
+					<form onSubmit={handleSubmit(onSubmitHandler)}>
+						<IonItem>
+							<Controller
+								control={control}
+								name="name"
+								rules={{ required: true }}
+								defaultValue={name}
+								render={({ field: { value, onBlur, onChange } }) => (
+									<IonInput
+										type="text"
+										value={value}
+										onIonBlur={onBlur}
+										onInput={onChange}
+										onIonChange={onChange}
+										placeholder="Full Name"
+										name="name"
+									/>
+								)}
+							/>
+							{errors.name && <div className="input-error">Name is required</div>}
+						</IonItem>
+						<IonItem>
+							<Controller
+								control={control}
+								name="biography"
+								rules={{ required: true }}
+								defaultValue={biography.rawvalue}
+								render={({ field: { value, onBlur, onChange } }) => (
+									<IonTextarea value={value} onIonBlur={onBlur} onInput={onChange} onIonChange={onChange} placeholder="Biography" name="biography" />
+								)}
+							/>
+							{errors.biography && <div className="input-error">Biography is required</div>}
+						</IonItem>
 
-					<div className="mt-3">
-						<IonButton expand="block" type="submit" class="w-100 fixed-button" onClick={onSubmitHandler}>
-							Save
-						</IonButton>
-					</div>
+						<div className="mt-3">
+							<Button type="submit">Save</Button>
+						</div>
+					</form>
 				</div>
 			</IonModal>
 		</>

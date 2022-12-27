@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { API } from '../config/config';
 
-import PageMenu from '../components/Menu/PageMenu';
+import LayoutMenu from '../components/Layout/LayoutMenu';
 import PageTabs from '../components/Tabs/PageTabs';
 
 import Home from '../pages/Home';
@@ -26,7 +26,7 @@ const Routes = () => {
 	return (
 		<IonReactRouter>
 			<IonSplitPane>
-				<PageMenu />
+				<LayoutMenu />
 				<PageTabs>
 					<IonRouterOutlet id="main" ionPage>
 						{/* Using of <Switch> to fix proper unmount when transitioning between pages.Known Bug since Ionic V5 */}
@@ -75,7 +75,7 @@ const Routes = () => {
 									return storeAuth.isLoggedin ? <Bookmarks /> : <Redirect exact to={API.login.url} />;
 								}}
 							/>
-							<Route path={`${API.home.url}/:id`} exact component={Profile} />
+							<Route path={`${API.profile.url}/:id`} exact component={Profile} />
 
 							<Route
 								exact

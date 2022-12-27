@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import './index.css';
 
 const Card = ({ onClickData, onClick, children }) => {
@@ -7,12 +6,6 @@ const Card = ({ onClickData, onClick, children }) => {
 			{children}
 		</div>
 	);
-};
-
-Card.defaultProps = {};
-
-Card.propTypes = {
-	onClick: PropTypes.func,
 };
 
 export default Card;

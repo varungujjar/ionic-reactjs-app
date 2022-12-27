@@ -1,22 +1,34 @@
-import React, { useEffect } from 'react';
-import { IonButton, IonInput, IonItem } from '@ionic/react';
+import { useEffect } from 'react';
+import { IonInput, IonItem } from '@ionic/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
-import { setToast } from '../hooks/useToast';
 import { loginAction, showNotificationAction } from '../redux/actions';
 import { useForm, Controller } from 'react-hook-form';
 import { API } from '../config/config';
-
+import Button from '../components/Form/Button';
 import serviceApi from '../config/axios';
 
 const WebAuth = () => {
 	let history = useHistory();
 	const reduxDispatch = useDispatch();
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm({
+		defaultValues: {
+			username: '',
+			password: '',
+		},
+		mode: 'onChange',
+		reValidateMode: 'onChange',
+	});
+
 	const { storeAuth } = useSelector((state) => {
 		return state;
 	});
 
-	const onSubmit = async (data) => {
+	const onSubmitHandler = async (data) => {
 		// showLoader(LoaderOptions);
 		await serviceApi
 			.get(null, {
@@ -42,28 +54,14 @@ const WebAuth = () => {
 			});
 	};
 
-	const {
-		control,
-		// register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm({
-		defaultValues: {
-			username: '',
-			password: '',
-		},
-		mode: 'onChange',
-		reValidateMode: 'onChange',
-	});
-
 	useEffect(() => {
 		if (storeAuth.isLoggedin) {
-			history.push('/page/profile');
+			history.push(API.login.afterLogin);
 		}
 	}, [storeAuth.isLoggedin, history]);
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)}>
+		<form onSubmit={handleSubmit(onSubmitHandler)}>
 			<IonItem>
 				<Controller
 					control={control}
@@ -86,11 +84,9 @@ const WebAuth = () => {
 				/>
 				{errors.password && <div className="input-error">Password is required</div>}
 			</IonItem>
-			<IonButton expand="block" type="submit" class="w-100 mt-3">
-				Sign In
-			</IonButton>
+			<Button type="submit">Sign In</Button>
 			<p style={{ fontSize: 'medium' }} className="mt-3">
-				{"Don't have an account yet?"}
+				{"Don't have an account yet? "}
 				<Link to="/page/register" className="text-highlight">
 					Create an Account
 				</Link>
