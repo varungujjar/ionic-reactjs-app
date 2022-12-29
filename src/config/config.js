@@ -9,7 +9,7 @@ import {
 } from 'ionicons/icons';
 
 export const API = {
-	timeOutDelay: 500,
+	timeOutDelay: 0,
 	baseUrl: 'https://www.bigbangsports.gg/beta/',
 	home: {
 		title: 'Home',

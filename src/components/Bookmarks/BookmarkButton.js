@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { IonButton } from '@ionic/react';
+import { IonButton, IonIcon } from '@ionic/react';
+import { starOutline } from 'ionicons/icons';
 import { useProfile } from '../../hooks/useProfile';
 import { useDispatch, useSelector } from 'react-redux';
 import { showNotificationAction, refreshSessionAction } from '../../redux/actions';
@@ -35,6 +36,7 @@ const BookmarkButton = ({ item }) => {
 			.then((response) => {
 				reduxDispatch(showNotificationAction(response.data));
 				session && reduxDispatch(refreshSessionAction({ session: session, id: id }));
+				session && setActive(!active);
 			})
 			.catch((error) => {
 				reduxDispatch(
@@ -47,6 +49,7 @@ const BookmarkButton = ({ item }) => {
 	};
 
 	useEffect(() => {
+		setActive(false);
 		switch (item.type) {
 			case 'articles':
 				if (articles && articles.filter((_item) => _item.id === item.id).length) {
@@ -62,11 +65,11 @@ const BookmarkButton = ({ item }) => {
 					setActive(true);
 				}
 		}
-	}, [item.type, active, userSession]);
+	}, [item.type, active, userSession, loading]);
 
 	return (
 		<IonButton size="small" type="button" class={`bookmark-button ${active ? 'active' : ''}`} onClick={onClickHandler}>
-			Star
+			<IonIcon icon={starOutline} />
 		</IonButton>
 	);
 };
