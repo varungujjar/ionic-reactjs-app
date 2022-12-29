@@ -5,7 +5,7 @@ import { showNotificationAction } from '../../redux/actions';
 import { useDispatch } from 'react-redux';
 import serviceApi from '../../config/axios';
 
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 import StaticPlaceholder from './StaticPlaceholder';
 
 const Static = ({ id }) => {
@@ -62,9 +62,9 @@ const Static = ({ id }) => {
 	}, [id, reduxDispatch]);
 
 	return (
-		<PageLayout title={item.data.title ? item.data.title : null} icon={documentText}>
+		<Layout title={item.data.title ? item.data.title : null} icon={documentText}>
 			{item.loading ? <StaticPlaceholder /> : <DisplayItem data={item} />}
-		</PageLayout>
+		</Layout>
 	);
 };
 

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { API } from '../../config/config';
 import { useDispatch } from 'react-redux';
+import { showNotificationAction } from '../../redux/actions';
+import { API } from '../../config/config';
 import serviceApi from '../../config/axios';
 
-import { showNotificationAction } from '../../redux/actions';
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 import VideoCardPlaceholder from '../../components/Videos/VideoCardPlaceholder';
 import VideoCard from '../../components/Videos/VideoCard';
 
@@ -27,9 +27,9 @@ const Videos = () => {
 
 	const reduxDispatch = useDispatch();
 
-	const setCategoryId = (categoryId) => {
+	const tabOnChangeHandler = (id) => {
 		setItems((prev) => ({ ...prev, loading: true }));
-		setItemCategories((prev) => ({ ...prev, activeId: categoryId }));
+		setItemCategories((prev) => ({ ...prev, activeId: id }));
 	};
 
 	const doRefresh = (event) => {
@@ -93,16 +93,12 @@ const Videos = () => {
 
 	return (
 		<>
-			<PageLayout
+			<Layout
 				title={API.videos.title}
-				tabShow={true}
-				tabItems={itemCategories.data}
-				tabDefaultTitle={'Featured'}
-				tabDefaultTitleValue={0}
-				tabActiveValue={itemCategories.activeId}
-				tabIsLoading={itemCategories.loading}
-				tabOnChange={(categoryId) => setCategoryId(categoryId)}
-				showPageRefresh={true}
+				tabEnable={true}
+				tabItems={itemCategories}
+				tabOnChange={tabOnChangeHandler}
+				enablePageRefresh={true}
 				onPageRefresh={doRefresh}
 			>
 				{items.loading ? (
@@ -115,7 +111,7 @@ const Videos = () => {
 				) : (
 					<>No videos to display</>
 				)}
-			</PageLayout>
+			</Layout>
 		</>
 	);
 };

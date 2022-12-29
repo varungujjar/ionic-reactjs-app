@@ -9,4 +9,9 @@ const Button = ({ children, type }) => {
 	);
 };
 
+Button.defaultProps = {
+	link: undefined,
+	type: 'button',
+};
+
 export default Button;

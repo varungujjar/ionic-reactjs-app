@@ -1,7 +1,15 @@
-import { bookmarkOutline, documentTextOutline, personOutline, newspaperOutline, homeOutline, documentOutline, filmOutline } from 'ionicons/icons';
+import {
+	bookmarkOutline,
+	documentTextOutline,
+	personOutline,
+	newspaperOutline,
+	homeOutline,
+	documentOutline,
+	filmOutline,
+} from 'ionicons/icons';
 
 export const API = {
-	timeOutDelay: 1000,
+	timeOutDelay: 500,
 	baseUrl: 'https://www.bigbangsports.gg/beta/',
 	home: {
 		title: 'Home',
@@ -10,12 +18,14 @@ export const API = {
 	articles: {
 		title: 'Articles',
 		type: 'articles',
+		alias: 'articles',
 		url: '/page/articles',
 		id: 11,
 	},
 	news: {
 		title: 'News',
 		type: 'articles',
+		alias: 'news',
 		url: '/page/news',
 		id: 8,
 	},
@@ -77,7 +87,7 @@ export const API = {
 	},
 	bookmarks: {
 		title: 'Bookmarks',
-		type: 'bookmarks',
+		type: 'bookmark',
 		url: '/page/bookmarks',
 	},
 };

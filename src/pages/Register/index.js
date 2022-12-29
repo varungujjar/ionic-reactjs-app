@@ -8,7 +8,7 @@ import { IonInput, IonItem } from '@ionic/react';
 import { API } from '../../config/config';
 import serviceApi from '../../config/axios';
 import Button from '../../components/Form/Button';
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 
 const Register = () => {
 	let history = useHistory();
@@ -62,7 +62,7 @@ const Register = () => {
 	useEffect(() => {}, []);
 
 	return (
-		<PageLayout title={API.register.title}>
+		<Layout title={API.register.title}>
 			<div className="login-container center-container">
 				<div className="logo">
 					<img src="./assets/images/about-weare.png" alt="logo" />
@@ -129,7 +129,7 @@ const Register = () => {
 					</p>
 				</form>
 			</div>
-		</PageLayout>
+		</Layout>
 	);
 };
 

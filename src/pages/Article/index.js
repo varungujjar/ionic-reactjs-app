@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { API } from '../../config/config';
 import serviceApi from '../../config/axios';
 
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 import ArticlePlaceholder from './ArticlePlaceholder';
 import ArticleImage from '../../components/Articles/ArticleImage';
 
@@ -71,9 +71,9 @@ const Article = (props) => {
 	}, [id, reduxDispatch]);
 
 	return (
-		<PageLayout title={item.category} icon={documentText}>
+		<Layout title={item.category} icon={documentText}>
 			{item.loading ? <ArticlePlaceholder /> : <DisplayItem item={item.data} />}
-		</PageLayout>
+		</Layout>
 	);
 };
 

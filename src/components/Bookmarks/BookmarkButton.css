@@ -1,0 +1,11 @@
+.bookmark-button {
+	--background: #999;
+	position: absolute;
+	z-index: 999;
+	right: 20px;
+	top: 20px;
+}
+
+.bookmark-button.active {
+	--background: rgb(220, 191, 2);
+}

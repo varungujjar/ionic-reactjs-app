@@ -1,4 +1,4 @@
-import { IonButton } from '@ionic/react';
+import ButtonLink from '../Form/ButtonLink';
 
 const PageSection = ({ title, link }) => {
 	return (
@@ -9,7 +9,7 @@ const PageSection = ({ title, link }) => {
 
 			{link && (
 				<div className="ms-auto">
-					<IonButton routerLink={link}>View All</IonButton>
+					<ButtonLink link={link}>View All</ButtonLink>
 				</div>
 			)}
 		</div>

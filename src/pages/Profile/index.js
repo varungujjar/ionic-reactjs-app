@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useProfile } from '../../hooks/useProfile';
 import { refreshSessionAction, showNotificationAction } from '../../redux/actions';
 import serviceApi from '../../config/axios';
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 import ProfilePlaceholder from './ProfilePlaceholder';
 import ProfileCover from './ProfileCover';
 import ProfilePicture from './ProfilePicture';
@@ -83,9 +83,9 @@ const Profile = () => {
 		};
 	}, [id, loading]);
 	return (
-		<PageLayout title="Profile" showPageRefresh={true} onPageRefresh={onPageRefresh}>
+		<Layout title="Profile" showPageRefresh={true} onPageRefresh={onPageRefresh}>
 			{pageLoading ? <ProfilePlaceholder /> : <RenderProfile />}
-		</PageLayout>
+		</Layout>
 	);
 };
 

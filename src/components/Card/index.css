@@ -1,14 +1,16 @@
 body {
-  --bs-border-radius: 15px;
+	--bs-border-radius: 15px;
 }
 .rounded {
-  border-radius: 15px !important;
+	border-radius: 15px !important;
 }
 .card {
-  overflow: hidden;
+	overflow: hidden;
+	position: relative;
 }
 
 .card img {
-  height: 200px;
-  object-fit: cover;
+	height: 200px;
+	object-fit: cover;
+	width: 100%;
 }

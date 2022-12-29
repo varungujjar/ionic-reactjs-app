@@ -11,6 +11,7 @@ import serviceApi from '../config/axios';
 const WebAuth = () => {
 	let history = useHistory();
 	const reduxDispatch = useDispatch();
+
 	const {
 		control,
 		handleSubmit,
@@ -58,7 +59,7 @@ const WebAuth = () => {
 		if (storeAuth.isLoggedin) {
 			history.push(API.login.afterLogin);
 		}
-	}, [storeAuth.isLoggedin, history]);
+	}, [storeAuth.isLoggedin]);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmitHandler)}>
@@ -68,7 +69,14 @@ const WebAuth = () => {
 					name="username"
 					rules={{ required: true }}
 					render={({ field: { value, onBlur, onChange } }) => (
-						<IonInput type="text" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Username" />
+						<IonInput
+							type="text"
+							onIonBlur={onBlur}
+							value={value}
+							onInput={onChange}
+							onIonChange={onChange}
+							placeholder="Username"
+						/>
 					)}
 				/>
 				{errors.username && <div className="input-error">Username is required</div>}
@@ -79,7 +87,14 @@ const WebAuth = () => {
 					name="password"
 					rules={{ required: true }}
 					render={({ field: { value, onBlur, onChange } }) => (
-						<IonInput type="password" onIonBlur={onBlur} value={value} onInput={onChange} onIonChange={onChange} placeholder="Password" />
+						<IonInput
+							type="password"
+							onIonBlur={onBlur}
+							value={value}
+							onInput={onChange}
+							onIonChange={onChange}
+							placeholder="Password"
+						/>
 					)}
 				/>
 				{errors.password && <div className="input-error">Password is required</div>}

@@ -68,13 +68,14 @@ const Routes = () => {
 
 							<Route path={API.register.url} exact component={Register} />
 							<Route path={API.login.url} exact component={Login} />
-							<Route
+							<Route path={API.bookmarks.url} exact component={Bookmarks} />
+							{/* <Route
 								exact
 								path={API.bookmarks.url}
 								render={() => {
 									return storeAuth.isLoggedin ? <Bookmarks /> : <Redirect exact to={API.login.url} />;
 								}}
-							/>
+							/> */}
 							<Route path={`${API.profile.url}/:id`} exact component={Profile} />
 
 							<Route

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import serviceApi from '../../config/axios';
 import { API } from '../../config/config';
 
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 import PageSection from '../../components/Layout/PageSection';
 
 import VideoCarousel from '../../components/Videos/VideoCarousel';
@@ -128,7 +128,7 @@ const Home = () => {
 	}, [reduxDispatch, refreshToggle]);
 
 	return (
-		<PageLayout title={API.home.title} onPageRefresh={doRefresh} showPageRefresh={true}>
+		<Layout title={API.home.title} onPageRefresh={doRefresh} enablePageRefresh={true}>
 			<PageSection title={API.videos.title} link={API.videos.url} />
 			{videosItems.loading ? <VideoCarouselPlaceholder /> : <VideoCarousel items={videosItems} />}
 
@@ -140,7 +140,7 @@ const Home = () => {
 
 			<PageSection title={API.news.title} link={API.news.url} />
 			{newsItems.loading ? <ArticleCarouselPlaceholder /> : <ArticleCarousel items={newsItems} />}
-		</PageLayout>
+		</Layout>
 	);
 };
 

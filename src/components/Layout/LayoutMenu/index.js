@@ -1,11 +1,10 @@
 import { IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle } from '@ionic/react';
 import { useLocation } from 'react-router-dom';
-import { MENU } from '../../config/config';
+import { MENU } from '../../../config/config';
+import ProfileLogout from '../../Profiles/ProfileLogout';
+import ProfileStatus from '../../Profiles/ProfileStatus';
 
-import ProfileLogout from '../Profiles/ProfileLogout';
-import ProfileStatus from '../Profiles/ProfileStatus';
-
-import './LayoutMenu.css';
+import './index.css';
 
 const LayoutMenu = () => {
 	const location = useLocation();

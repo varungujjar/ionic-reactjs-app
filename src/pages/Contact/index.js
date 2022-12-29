@@ -7,7 +7,7 @@ import { IonTextarea, IonInput, IonItem } from '@ionic/react';
 import { API } from '../../config/config';
 import serviceApi from '../../config/axios';
 import Button from '../../components/Form/Button';
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 
 const Contact = () => {
 	let history = useHistory();
@@ -64,7 +64,7 @@ const Contact = () => {
 	};
 
 	return (
-		<PageLayout title={API.contact.title}>
+		<Layout title={API.contact.title}>
 			<div className="login-container center-container">
 				<br></br>
 				<h2>Contact Us</h2>
@@ -135,7 +135,7 @@ const Contact = () => {
 					<Button type="submit">Submit</Button>
 				</form>
 			</div>
-		</PageLayout>
+		</Layout>
 	);
 };
 

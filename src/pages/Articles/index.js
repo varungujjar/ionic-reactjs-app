@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { showNotificationAction } from '../../redux/actions';
 import serviceApi from '../../config/axios';
 
-import PageLayout from '../../components/Layout/PageLayout';
+import Layout from '../../components/Layout';
 import ArticleCardPlaceholder from '../../components/Articles/ArticleCardPlaceholder';
 import ArticleCard from '../../components/Articles/ArticleCard';
 
@@ -53,18 +53,18 @@ const Articles = ({ id, title }) => {
 	}, [categoryId, reduxDispatch, refreshToggle]);
 
 	return (
-		<PageLayout title={categoryName} onPageRefresh={doRefresh} showPageRefresh={true}>
+		<Layout title={categoryName} onPageRefresh={doRefresh} enablePageRefresh={true}>
 			{items.loading ? (
 				<>
 					<ArticleCardPlaceholder />
 					<ArticleCardPlaceholder />
 				</>
-			) : Object.keys(items.data).length > 0 ? (
+			) : items.data.length > 0 ? (
 				items.data.map((article) => <ArticleCard key={article.id} data={article} />)
 			) : (
 				<>No articles to display</>
 			)}
-		</PageLayout>
+		</Layout>
 	);
 };
 export default Articles;
