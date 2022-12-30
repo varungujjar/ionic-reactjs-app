@@ -8,22 +8,22 @@ import Layout from '../../components/Layout';
 import VideoCardPlaceholder from '../../components/Videos/VideoCardPlaceholder';
 import VideoCard from '../../components/Videos/VideoCard';
 
-const memo = (callback) => {
-	const cache = new Map();
-	return (...args) => {
-		const selector = JSON.stringify(args);
-		if (cache.has(selector)) return cache.get(selector);
-		const value = callback(...args);
-		cache.set(selector, value);
-		return value;
-	};
-};
+// const memo = (callback) => {
+// 	const cache = new Map();
+// 	return (...args) => {
+// 		const selector = JSON.stringify(args);
+// 		if (cache.has(selector)) return cache.get(selector);
+// 		const value = callback(...args);
+// 		cache.set(selector, value);
+// 		return value;
+// 	};
+// };
 
-const memoizedAxiosGet = memo(serviceApi.get);
+// const memoizedAxiosGet = memo(serviceApi.get);
 
 const Videos = () => {
 	const [items, setItems] = useState({ data: {}, loading: true });
-	const [itemCategories, setItemCategories] = useState({ activeId: 0, data: {}, loading: true });
+	const [itemCategories, setItemCategories] = useState({ activeId: null, data: {}, loading: true });
 
 	const reduxDispatch = useDispatch();
 
@@ -41,13 +41,14 @@ const Videos = () => {
 	useEffect(() => {
 		const fetchItems = (categoryId) => {
 			setTimeout(async () => {
-				await memoizedAxiosGet(null, {
-					params: {
-						type: API.videos.type,
-						featured: categoryId === 0 ? true : false,
-						catid: categoryId ? categoryId : itemCategories.activeId,
-					},
-				})
+				await serviceApi
+					.get(null, {
+						params: {
+							type: API.videos.type,
+							// featured: categoryId === 0 ? true : false,
+							catid: categoryId,
+						},
+					})
 					.then((response) => {
 						reduxDispatch(showNotificationAction(response.data));
 						setItems((prev) => ({ ...prev, data: response.data.data, loading: false }));
@@ -63,20 +64,26 @@ const Videos = () => {
 			}, API.timeOutDelay);
 		};
 
-		fetchItems(itemCategories.activeId);
-	}, [items.loading, reduxDispatch, itemCategories.activeId]);
-
-	useEffect(() => {
 		const GetVideoCategories = () => {
 			setTimeout(async () => {
-				await memoizedAxiosGet(null, {
-					params: {
-						type: 'videosCategories',
-					},
-				})
+				await serviceApi
+					.get(null, {
+						params: {
+							type: 'videosCategories',
+						},
+					})
 					.then((response) => {
 						reduxDispatch(showNotificationAction(response.data));
-						setItemCategories((prev) => ({ ...prev, data: response.data.data, loading: false }));
+
+						if (response.data) {
+							const firstCategoryId = response.data.data[0].id;
+							setItemCategories((prev) => ({
+								...prev,
+								data: response.data.data,
+								activeId: firstCategoryId,
+								loading: false,
+							}));
+						}
 					})
 					.catch((error) => {
 						reduxDispatch(
@@ -88,31 +95,34 @@ const Videos = () => {
 					});
 			}, API.timeOutDelay);
 		};
-		GetVideoCategories();
-	}, [itemCategories.loading, reduxDispatch]);
+		if (itemCategories.activeId) {
+			fetchItems(itemCategories.activeId);
+		} else {
+			GetVideoCategories();
+		}
+	}, [itemCategories.loading, itemCategories.activeId, reduxDispatch]);
 
 	return (
-		<>
-			<Layout
-				title={API.videos.title}
-				tabEnable={true}
-				tabItems={itemCategories}
-				tabOnChange={tabOnChangeHandler}
-				enablePageRefresh={true}
-				onPageRefresh={doRefresh}
-			>
-				{items.loading ? (
-					<>
-						<VideoCardPlaceholder />
-						<VideoCardPlaceholder />
-					</>
-				) : Object.keys(items.data).length > 0 ? (
-					items.data.map((video) => <VideoCard key={video.id} data={video} />)
-				) : (
-					<>No videos to display</>
-				)}
-			</Layout>
-		</>
+		<Layout
+			title={API.videos.title}
+			tabEnable={true}
+			tabItems={itemCategories}
+			tabOnChange={tabOnChangeHandler}
+			enablePageRefresh={true}
+			onPageRefresh={doRefresh}
+		>
+			{console.log('did once')}
+			{items.loading ? (
+				<>
+					<VideoCardPlaceholder />
+					<VideoCardPlaceholder />
+				</>
+			) : Object.keys(items.data).length > 0 ? (
+				items.data.map((video) => <VideoCard key={video.id} data={video} />)
+			) : (
+				<>No videos to display</>
+			)}
+		</Layout>
 	);
 };
 

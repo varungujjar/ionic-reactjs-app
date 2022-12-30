@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">Big Bang Sports</string>
     <string name="title_activity_main">Big Bang Sports</string>
-    <string name="package_name">com.constellationesports</string>
-    <string name="custom_url_scheme">com.constellationesports</string>
+    <string name="package_name">com.bigbangsports</string>
+    <string name="custom_url_scheme">com.bigbangsports</string>
     <color name="myColor">#171027</color>
     <string name="facebook_app_id">730915411432768</string>
     <string name="fb_login_protocol_scheme">fb730915411432768</string>
