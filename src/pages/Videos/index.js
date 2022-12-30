@@ -22,8 +22,8 @@ import VideoCard from '../../components/Videos/VideoCard';
 // const memoizedAxiosGet = memo(serviceApi.get);
 
 const Videos = () => {
-	const [items, setItems] = useState({ data: {}, loading: true });
-	const [itemCategories, setItemCategories] = useState({ activeId: null, data: {}, loading: true });
+	const [items, setItems] = useState({ data: [], loading: true });
+	const [itemCategories, setItemCategories] = useState({ activeId: null, data: [], loading: true });
 
 	const reduxDispatch = useDispatch();
 
@@ -33,8 +33,8 @@ const Videos = () => {
 	};
 
 	const doRefresh = (event) => {
-		setItems((prev) => ({ ...prev, loading: true }));
-		setItemCategories((prev) => ({ ...prev, loading: true }));
+		setItems((prev) => ({ ...prev, data: [], loading: true }));
+		setItemCategories((prev) => ({ ...prev, data: [], loading: true }));
 		event.detail.complete();
 	};
 
@@ -95,9 +95,10 @@ const Videos = () => {
 					});
 			}, API.timeOutDelay);
 		};
-		if (itemCategories.activeId) {
+		if (items.loading && itemCategories.activeId) {
 			fetchItems(itemCategories.activeId);
-		} else {
+		}
+		if (itemCategories.loading) {
 			GetVideoCategories();
 		}
 	}, [itemCategories.loading, itemCategories.activeId, reduxDispatch]);
@@ -111,7 +112,6 @@ const Videos = () => {
 			enablePageRefresh={true}
 			onPageRefresh={doRefresh}
 		>
-			{console.log('did once')}
 			{items.loading ? (
 				<>
 					<VideoCardPlaceholder />

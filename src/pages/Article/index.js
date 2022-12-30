@@ -68,7 +68,7 @@ const Article = (props) => {
 				});
 		};
 		GetArticlesItems();
-	}, [id, reduxDispatch]);
+	}, [id]);
 
 	return (
 		<Layout title={item.category} icon={documentText}>

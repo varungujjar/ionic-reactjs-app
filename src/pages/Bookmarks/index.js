@@ -35,10 +35,7 @@ const Bookmarks = () => {
 		event.detail.complete();
 	};
 
-	useEffect(() => {
-		console.log(loading);
-		console.log(articles);
-	}, [activeCategory]);
+	useEffect(() => {}, [activeCategory]);
 
 	return (
 		<>

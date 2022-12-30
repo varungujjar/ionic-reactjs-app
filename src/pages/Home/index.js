@@ -128,7 +128,7 @@ const Home = () => {
 	}, [reduxDispatch, refreshToggle]);
 
 	return (
-		<Layout title={API.home.title} onPageRefresh={doRefresh} enablePageRefresh={true}>
+		<Layout menuButton={true} title={API.home.title} onPageRefresh={doRefresh} enablePageRefresh={true}>
 			<PageSection title={API.videos.title} link={API.videos.url} />
 			{videosItems.loading ? <VideoCarouselPlaceholder /> : <VideoCarousel items={videosItems} />}
 

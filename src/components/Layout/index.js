@@ -1,15 +1,32 @@
-import { IonButtons, IonRefresherContent, IonRefresher, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import {
+	IonButtons,
+	IonBackButton,
+	IonRefresherContent,
+	IonRefresher,
+	IonContent,
+	IonHeader,
+	IonMenuButton,
+	IonPage,
+	IonTitle,
+	IonToolbar,
+} from '@ionic/react';
 import LayoutSegment from './LayoutSegment';
 
-const Layout = ({ title, tabEnable, tabItems, tabOnChange, enablePageRefresh, onPageRefresh, children }) => {
+const Layout = ({
+	menuButton,
+	title,
+	tabEnable,
+	tabItems,
+	tabOnChange,
+	enablePageRefresh,
+	onPageRefresh,
+	children,
+}) => {
 	return (
 		<IonPage>
 			<IonHeader>
 				<IonToolbar>
-					<IonButtons slot="start">
-						<IonMenuButton />
-					</IonButtons>
-					{/* <IonIcon icon={documentText}></IonIcon> */}
+					<IonButtons slot="start">{menuButton ? <IonMenuButton /> : <IonBackButton />}</IonButtons>
 					<IonTitle>{title}</IonTitle>
 				</IonToolbar>
 				{tabEnable && <LayoutSegment items={tabItems} onChange={(id) => tabOnChange(id)} />}
@@ -29,6 +46,7 @@ const Layout = ({ title, tabEnable, tabItems, tabOnChange, enablePageRefresh, on
 };
 
 Layout.defaultProps = {
+	menuButton: false,
 	title: '',
 	icon: '',
 	tabEnable: false,
