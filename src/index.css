@@ -8,10 +8,31 @@ body {
 		'Droid Sans', 'Helvetica Neue', sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	--ion-background-color: #0f091a;
+	--ion-toolbar-background: #080209;
+	--ion-text-color: #ffffff;
+	--ion-text-color-rgb: 255, 255, 255;
+	--ion-color-primary: #fbbf24;
 }
 
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.tab-selected {
+	color: #ffc00f !important;
+	--ripple-color: #ffc00f !important;
+}
+
+ion-segment {
+	--background: #080209 !important;
+}
+ion-segment-button {
+	color: #fff;
+}
+.segment-button-checked {
+	color: #fff !important;
+	--indicator-color: #ffc00f;
 }
 
 .owl-stage {

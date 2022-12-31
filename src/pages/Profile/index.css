@@ -8,42 +8,12 @@ ion-modal {
 	align-items: flex-end;
 }
 
-.btn-bio-edit {
-	position: fixed;
-	bottom: 30px;
-	z-index: 99;
-	right: 30px;
-	border-radius: 50px !important;
-	height: 43px;
-	width: 43px;
-	box-shadow: rgb(0, 0, 0, 0.5) 2px 2px 7px 0px;
-}
-
-.btn-image-edit {
-	position: absolute;
-	top: 70px;
-	z-index: 99;
-	right: 30px;
-	border-radius: 50px !important;
-	height: 43px;
-	width: 43px;
-}
-
 .profile-image {
 	position: relative;
 	top: -50px;
 	margin-bottom: -30px;
 	z-index: 99;
 	display: flex;
-}
-
-.profile-image img {
-	background-color: #efefef;
-	object-fit: cover;
-	width: 130px;
-	height: 130px;
-	border-radius: 70px;
-	border: 10px solid white;
 }
 
 .profile-details-wrapper {
@@ -58,13 +28,4 @@ ion-modal {
 
 .profile-image-wrapper {
 	position: relative;
-}
-.btn-profile-image-edit {
-	position: absolute;
-	top: 0px;
-	z-index: 99;
-	right: 0px;
-	border-radius: 50px !important;
-	height: 43px;
-	width: 43px;
 }

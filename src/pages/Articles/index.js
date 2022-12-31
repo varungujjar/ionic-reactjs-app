@@ -5,6 +5,7 @@ import { showNotificationAction } from '../../redux/actions';
 import serviceApi from '../../config/axios';
 
 import Layout from '../../components/Layout';
+import LayoutNoItemsFound from '../../components/Layout/LayoutNoItemsFound';
 import ArticleCardPlaceholder from '../../components/Articles/ArticleCardPlaceholder';
 import ArticleCard from '../../components/Articles/ArticleCard';
 
@@ -60,9 +61,9 @@ const Articles = ({ id, title }) => {
 					<ArticleCardPlaceholder />
 				</>
 			) : items.data.length > 0 ? (
-				items.data.map((article) => <ArticleCard key={article.id} data={article} />)
+				items.data.map((article) => <ArticleCard key={article.id} data={article} list={true} />)
 			) : (
-				<>No articles to display</>
+				<LayoutNoItemsFound message="No articles found." />
 			)}
 		</Layout>
 	);

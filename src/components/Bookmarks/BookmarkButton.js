@@ -68,9 +68,16 @@ const BookmarkButton = ({ item }) => {
 	}, [item.type, active, userSession, loading]);
 
 	return (
-		<IonButton size="small" type="button" class={`bookmark-button ${active ? 'active' : ''}`} onClick={onClickHandler}>
+		<button
+			size="small"
+			type="button"
+			className={`h-8 w-8 rounded-full font-bold position-absolute top-4 right-4 ${
+				active ? 'bg-amber-400 text-slate-800' : 'bg-slate-600'
+			}`}
+			onClick={onClickHandler}
+		>
 			<IonIcon icon={starOutline} />
-		</IonButton>
+		</button>
 	);
 };
 

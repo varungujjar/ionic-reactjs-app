@@ -20,12 +20,12 @@ const ProfileCard = ({ data }) => {
 			<div onClick={() => onClickHandler(id)}>
 				<div className="d-flex align-items-center p-3">
 					<div className="flex-shrink-0 user-card-thumb">
-						<img src={image_src} alt={username} />
+						<img src={image_src} alt={username} className="object-cover" />
 					</div>
 					<div className="flex-grow-1 ms-3">
 						<div className="card-body">
-							<h5 className="card-title">{username}</h5>
-							<p className="card-text">{name}</p>
+							<h5 className="font-bold">{username}</h5>
+							<p className="text-slate-400 mt-px">{name}</p>
 						</div>
 					</div>
 				</div>

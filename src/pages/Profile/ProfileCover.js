@@ -34,7 +34,7 @@ const ProfileCover = ({ src, alt, allowEdit, onChange }) => {
 				/>
 				{allowEdit && (
 					<button
-						className="btn btn-primary btn-image-edit"
+						className="w-10 h-10 bg-amber-400 rounded-full hover:bg-amber-500 position-absolute top-20 right-10 text-slate-800"
 						onClick={() => {
 							setOpenModal(true);
 						}}

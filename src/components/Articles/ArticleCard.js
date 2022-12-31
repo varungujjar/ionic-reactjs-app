@@ -6,7 +6,7 @@ import ArticleImage from './ArticleImage';
 import Card from '../Card';
 import BookmarkButton from '../Bookmarks/BookmarkButton';
 
-const ArticleCard = ({ data }) => {
+const ArticleCard = ({ data, list }) => {
 	const history = useHistory();
 	const { id, title, alias, introtext, images, created, catid } = data;
 	const articleType = getCategory(catid);
@@ -20,19 +20,19 @@ const ArticleCard = ({ data }) => {
 			<BookmarkButton item={{ type: articleType, id: id }} />
 			<div onClick={() => onClickHandler(id)}>
 				<ArticleImage images={images} alt={alias} />
-				<div className="card-body">
-					<h5 className="card-title">{title}</h5>
+				<div className="p-4">
+					<h5 className="text-xl font-bold">{list ? title : Truncate(title, 26)}</h5>
 
 					{created && (
-						<div className="card-text text-muted mb-2">
+						<div className="text-slate-400 mt-px">
 							<Formatdate date={created} />
 						</div>
 					)}
 
 					<div
-						className="card-text"
+						className="text-slate-400 mt-2"
 						dangerouslySetInnerHTML={{
-							__html: introtext ? Truncate(introtext, 100) : null,
+							__html: introtext ? Truncate(introtext, 60) : null,
 						}}
 					/>
 				</div>
@@ -42,7 +42,8 @@ const ArticleCard = ({ data }) => {
 };
 
 ArticleCard.defaultProps = {
-	data: {},
+	data: [],
+	list: false,
 };
 
 export default ArticleCard;

@@ -4,7 +4,7 @@ const PageSection = ({ title, link }) => {
 	return (
 		<div className="d-flex align-items-center mt-3">
 			<div>
-				<h5>{title}</h5>
+				<h5 className="text-xl text-cyan-300 text-uppercase">{title}</h5>
 			</div>
 
 			{link && (

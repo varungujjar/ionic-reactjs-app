@@ -24,10 +24,14 @@ const ProfilePicture = ({ src, alt, username, name, allowEdit, onChange }) => {
 		<>
 			<div className="profile-image">
 				<div className="profile-image-wrapper">
-					<img src={src ? src : './assets/images/article-no-image.png'} alt={alt} className="articleImage" />
+					<img
+						src={src ? src : './assets/images/article-no-image.png'}
+						alt={alt}
+						className="border-gray-900 border-8 bg-slate-900 rounded-full w-32 h-32"
+					/>
 					{allowEdit && (
 						<button
-							className="btn-profile-image-edit btn btn-primary"
+							className="w-10 h-10 bg-amber-400 rounded-full hover:bg-amber-500 position-absolute top-0 right-0 text-slate-800"
 							onClick={() => {
 								setOpenModal(true);
 							}}
@@ -38,7 +42,7 @@ const ProfilePicture = ({ src, alt, username, name, allowEdit, onChange }) => {
 				</div>
 
 				<div className="profile-details-wrapper">
-					<h5>{username}</h5>
+					<h5 className="text-2xl font-bold">{username}</h5>
 					<span className="profile-name">{name}</span>
 				</div>
 			</div>

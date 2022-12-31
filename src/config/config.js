@@ -12,7 +12,7 @@ export const API = {
 	timeOutDelay: 300,
 	baseUrl: 'https://www.bigbangsports.gg/beta/',
 	home: {
-		title: 'Home',
+		title: 'Big Bang Sports',
 		url: '/page/home',
 	},
 	articles: {

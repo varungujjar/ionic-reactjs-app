@@ -5,6 +5,7 @@ import { API } from '../../config/config';
 import serviceApi from '../../config/axios';
 
 import Layout from '../../components/Layout';
+import LayoutNoItemsFound from '../../components/Layout/LayoutNoItemsFound';
 import VideoCardPlaceholder from '../../components/Videos/VideoCardPlaceholder';
 import VideoCard from '../../components/Videos/VideoCard';
 
@@ -118,9 +119,9 @@ const Videos = () => {
 					<VideoCardPlaceholder />
 				</>
 			) : Object.keys(items.data).length > 0 ? (
-				items.data.map((video) => <VideoCard key={video.id} data={video} />)
+				items.data.map((video) => <VideoCard key={video.id} data={video} list={true} />)
 			) : (
-				<>No videos to display</>
+				<LayoutNoItemsFound message="No videos found" />
 			)}
 		</Layout>
 	);

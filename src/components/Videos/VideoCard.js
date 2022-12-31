@@ -1,8 +1,9 @@
 import { Fancybox } from '@fancyapps/ui';
+import { Truncate } from '../../helpers/Util';
 import Card from '../Card';
 import BookmarkButton from '../Bookmarks/BookmarkButton';
 
-const VideoCard = ({ data }) => {
+const VideoCard = ({ data, list }) => {
 	const { id, title, alias, youtubelink, duration } = data;
 
 	const PlayVideo = (youtubelink) => {
@@ -21,16 +22,21 @@ const VideoCard = ({ data }) => {
 		<Card>
 			<BookmarkButton item={{ type: 'videos', id: id }} />
 			<div onClick={() => PlayVideo(youtubelink)}>
-				<img src={thumbnail} alt={alias} />
+				<img src={thumbnail} alt={alias} className="h-32  object-cover w-full" />
 
-				<div className="card-body">
-					<h5 className="card-title">{title}</h5>
-					<p className="card-text">{duration}</p>
-					<p className="card-text">Some quick example text to build on the card title and make up the</p>
+				<div className="p-4">
+					<h5 className="text-xl font-bold">{list ? title : Truncate(title, 28)}</h5>
+					<p>{duration}</p>
+					<p className="text-slate-400">Some quick example text to build on the card title and make up the</p>
 				</div>
 			</div>
 		</Card>
 	);
+};
+
+VideoCard.defaultProps = {
+	data: [],
+	list: false,
 };
 
 export default VideoCard;

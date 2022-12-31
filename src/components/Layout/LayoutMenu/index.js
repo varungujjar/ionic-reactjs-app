@@ -12,11 +12,13 @@ const LayoutMenu = () => {
 	return (
 		<IonMenu contentId="main" type="overlay">
 			<IonContent>
-				<IonList id="inbox-list">
-					<IonMenuToggle autoHide={false}>
-						<ProfileStatus />
-					</IonMenuToggle>
-				</IonList>
+				<div className="mb-5">
+					<IonList id="inbox-list">
+						<IonMenuToggle autoHide={false}>
+							<ProfileStatus />
+						</IonMenuToggle>
+					</IonList>
+				</div>
 
 				{MENU.map((item, index) => {
 					return item.break ? (
@@ -31,7 +33,7 @@ const LayoutMenu = () => {
 								detail={false}
 								animated="true"
 							>
-								<IonIcon slot="start" ios={item.iosIcon} />
+								<IonIcon slot="start" ios={item.iosIcon} color="primary" />
 								<IonLabel>{item.title}</IonLabel>
 							</IonItem>
 						</IonMenuToggle>

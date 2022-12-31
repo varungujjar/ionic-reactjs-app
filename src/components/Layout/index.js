@@ -37,7 +37,7 @@ const Layout = ({
 						<IonRefresherContent></IonRefresherContent>
 					</IonRefresher>
 				)}
-				<div className="container" style={{ padding: '0px 20px' }}>
+				<div className="container text-base h-full" style={{ padding: '0px 20px' }}>
 					{children && children}
 				</div>
 			</IonContent>

@@ -4,8 +4,8 @@ const ProfileCardPlaceholder = () => {
 	return (
 		<Card>
 			<div className="d-flex align-items-center p-3">
-				<div className="flex-shrink-0 placeholder-img user-card-thumb">
-					<img src={'./assets/images/article-no-image.png'} alt="" />
+				<div className="flex-shrink-0 user-card-thumb">
+					<img src={'./assets/images/article-no-image.png'} alt="" className="placeholder" />
 				</div>
 				<div className="flex-grow-1 ms-3">
 					<div className="card-body">

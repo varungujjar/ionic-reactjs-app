@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { API } from '../../config/config';
 import { useProfile } from '../../hooks/useProfile';
 import Layout from '../../components/Layout';
+import LayoutNoItemsFound from '../../components/Layout/LayoutNoItemsFound';
 import ArticleCard from '../../components/Articles/ArticleCard';
 import ArticleCardPlaceholder from '../../components/Articles/ArticleCardPlaceholder';
 import VideoCard from '../../components/Videos/VideoCard';
@@ -58,19 +59,19 @@ const Bookmarks = () => {
 					(articles && articles.length ? (
 						articles.map((articleItem) => <ArticleCard key={articleItem.id} data={articleItem} />)
 					) : (
-						<>No Articles Bookmarked.</>
+						<LayoutNoItemsFound message="No articles bookmarked" />
 					))}
 				{activeCategory === 'news' &&
 					(news && news.length ? (
 						news.map((newsItem) => <ArticleCard key={newsItem.id} data={newsItem} />)
 					) : (
-						<>No News Bookmarked.</>
+						<LayoutNoItemsFound message="No news bookmarked" />
 					))}
 				{activeCategory === 'videos' &&
 					(videos && videos.length ? (
 						videos.map((videosItem) => <VideoCard key={videosItem.id} data={videosItem} />)
 					) : (
-						<>No Videos Bookmarked.</>
+						<LayoutNoItemsFound message="No videos bookmarked" />
 					))}
 			</Layout>
 		</>

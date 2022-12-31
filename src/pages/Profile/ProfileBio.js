@@ -41,15 +41,16 @@ const ProfileBio = ({ biography, name, allowEdit, onChange }) => {
 
 	return (
 		<>
-			<h6>Biography</h6>
+			<h6 className="text-xl font-bold text-cyan-300 text-uppercase">Biography</h6>
 			<div
+				className="mt-3"
 				dangerouslySetInnerHTML={{
 					__html: biography.rawvalue ? biography.rawvalue : 'No Biography',
 				}}
 			/>
 			{allowEdit && (
 				<button
-					className="btn btn-primary btn-bio-edit"
+					className="w-10 h-10 bg-amber-400 rounded-full hover:bg-amber-500 position-absolute  text-slate-800 bottom-24 right-10"
 					onClick={() => {
 						setOpenModal(true);
 					}}
@@ -58,13 +59,13 @@ const ProfileBio = ({ biography, name, allowEdit, onChange }) => {
 				</button>
 			)}
 			<div className="mt-4">
-				<h6>Games</h6>
-				<div className="text-muted mb-4">No Games Selected</div>
+				<h6 className="text-xl font-bold text-cyan-300 text-uppercase">Games</h6>
+				<div className="text-muted mt-3">No Games Selected</div>
 			</div>
 
 			<IonModal isOpen={openModal} onDidDismiss={onDidDismiss}>
 				<div className="container" style={{ padding: '20px 20px' }}>
-					<h6 className="text-bold">Edit Profile Details</h6>
+					<h6 className="text-xl font-bold text-cyan-300 text-uppercase">Edit Profile Details</h6>
 
 					<form onSubmit={handleSubmit(onSubmitHandler)}>
 						<IonItem>
@@ -94,7 +95,14 @@ const ProfileBio = ({ biography, name, allowEdit, onChange }) => {
 								rules={{ required: true }}
 								defaultValue={biography.rawvalue}
 								render={({ field: { value, onBlur, onChange } }) => (
-									<IonTextarea value={value} onIonBlur={onBlur} onInput={onChange} onIonChange={onChange} placeholder="Biography" name="biography" />
+									<IonTextarea
+										value={value}
+										onIonBlur={onBlur}
+										onInput={onChange}
+										onIonChange={onChange}
+										placeholder="Biography"
+										name="biography"
+									/>
 								)}
 							/>
 							{errors.biography && <div className="input-error">Biography is required</div>}

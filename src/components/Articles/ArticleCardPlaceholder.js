@@ -3,8 +3,8 @@ import Card from '../Card';
 const ArticleCardPlaceholder = () => {
 	return (
 		<Card>
-			<img src={'./assets/images/article-no-image.png'} className="card-img-top placeholder" alt={''} />
-			<div className="card-body">
+			<img src={'./assets/images/article-no-image.png'} className="h-48  object-cover w-full placeholder" alt={''} />
+			<div className="p-4">
 				<h5 className="card-title placeholder-glow">
 					<span className="placeholder col-6"></span>
 				</h5>

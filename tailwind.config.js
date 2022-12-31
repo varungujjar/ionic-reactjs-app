@@ -20,15 +20,15 @@ module.exports = {
 				},
 			],
 			base: [
-				'15px',
+				'14px',
 				{
-					lineHeight: '24px',
+					lineHeight: '19px',
 					letterSpacing: '-0.01em',
 					fontWeight: '400',
 				},
 			],
 			xl: [
-				'18px',
+				'15px',
 				{
 					lineHeight: '20px',
 					letterSpacing: '-0.01em',

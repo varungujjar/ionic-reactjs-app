@@ -22,16 +22,16 @@ const Article = (props) => {
 
 		return (
 			<div data-testid="article-loaded">
-				<div className="article-image-full">
+				<div className="w-full">
 					<ArticleImage images={images} alt={alias} />
 				</div>
-				<h2 className="mt-3">{title}</h2>
-				<div className="fs-6 mb-3 text-muted">
+				<h2 className="mt-3 text-2xl font-bold">{title}</h2>
+				<div className="mt-px text-slate-400">
 					<Formatdate date={created} />
 				</div>
 
 				<div
-					className="content-wrapper"
+					className="mt-3"
 					dangerouslySetInnerHTML={{
 						__html: introtext ? introtext : null,
 					}}
